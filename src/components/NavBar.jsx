@@ -33,9 +33,11 @@ function NavBar() {
       </div>
 
       <div className="relative hidden   md:flex justify-center items-center gap-8">
-        <button>
-          <FaShoppingCart className="text-[1.5rem]" />{" "}
-        </button>
+        <Link to="/cart">
+          <button>
+            <FaShoppingCart className="text-[1.5rem]" />{" "}
+          </button>
+        </Link>
         <div className="absolute  left-4 bottom-2  rounded-full bg-my-color w-7 h-7 text-white flex justify-center items-center">
           <p>0</p>
         </div>
@@ -67,9 +69,11 @@ function NavBar() {
             </Link>
           </ul>
           <div className="relative w-[100px] flex justify-center items-center gap-8">
-            <button>
-              <FaShoppingCart className="text-[1.5rem]" />{" "}
-            </button>
+            <Link to="/cart">
+              <button>
+                <FaShoppingCart className="text-[1.5rem]" />{" "}
+              </button>
+            </Link>
             <div className="absolute  left-4 bottom-2  rounded-full bg-my-color w-7 h-7 text-white flex justify-center items-center">
               <p>0</p>
             </div>
