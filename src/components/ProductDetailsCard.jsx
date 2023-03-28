@@ -10,6 +10,7 @@ import { GridLoader } from "react-spinners";
 function ProductDetailsCard() {
   const { productid } = useParams();
   const [showLoder, setShowLoader] = useState(false);
+  const [quantity, setQuantity] = useState(1);
   const [productdetails, setproductdetail] = useState({
     name: "",
     images: [
@@ -69,7 +70,7 @@ function ProductDetailsCard() {
           </div>
 
           <div className="lg:sticky lg:top-0 lg:col-span-2">
-            <form className="space-y-4 lg:pt-8">
+            <div className="space-y-4 lg:pt-8">
               <div>
                 <h1 className="text-2xl font-bold lg:text-3xl">
                   {productdetails.name}
@@ -123,21 +124,34 @@ function ProductDetailsCard() {
                   </tbody>
                 </table>
               </div>
+              <div className="flex mb-2">
+                <div className="flex min-w-24 dark:text-white">
+                  <button
+                    onClick={() => setQuantity(quantity - 1)}
+                    disabled={quantity == 1}
+                    type="button"
+                    className="h-7 w-7 rounded-full border border-[#e0e0e0]"
+                  >
+                    -
+                  </button>
+                  <p className="h-7 w-9 text-center mx-1 text-[1.3rem]">
+                    {quantity}
+                  </p>
 
-              <button
-                type="submit"
-                className="w-full rounded bg-red-700 px-6 py-3 text-sm font-bold uppercase tracking-wide text-white"
-              >
+                  <button
+                    onClick={() => setQuantity(quantity + 1)}
+                    type="button"
+                    className="h-7 w-7 rounded-full border border-[#e0e0e0] flex justify-center items-center"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              <button className="w-full md:w-[200px] rounded bg-red-700 px-6 py-3 text-sm font-bold uppercase tracking-wide text-white">
                 Add to cart
               </button>
-
-              <button
-                type="button"
-                className="w-full rounded border border-gray-300 bg-gray-100 px-6 py-3 text-sm font-bold uppercase tracking-wide"
-              >
-                Notify when on sale
-              </button>
-            </form>
+            </div>
           </div>
         </div>
       </div>

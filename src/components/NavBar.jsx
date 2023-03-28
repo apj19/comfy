@@ -58,7 +58,10 @@ function NavBar() {
       )}
 
       {showMobileNav && (
-        <div className="absolute w-full h-full top-20 left-0 animate__animated animate__fadeInLeft flex flex-col items-center">
+        <div
+          onClick={() => setShowMobileNav(false)}
+          className="absolute w-full h-full top-16 left-0 animate__animated animate__fadeInLeft flex flex-col items-center z-10 bg-gray-50"
+        >
           <ul className="flex flex-col justify-between items-center gap-8 mb-8">
             <Link to="/">
               <li>Home</li>
