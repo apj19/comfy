@@ -5,9 +5,11 @@ import { single_product_url } from "../utilities/EndPoints";
 import { useEffect } from "react";
 import { FaRupeeSign } from "react-icons/fa";
 import { FaCircle } from "react-icons/fa";
+import { GridLoader } from "react-spinners";
 
 function ProductDetailsCard() {
   const { productid } = useParams();
+  const [showLoder, setShowLoader] = useState(false);
   const [productdetails, setproductdetail] = useState({
     name: "",
     images: [
@@ -20,9 +22,11 @@ function ProductDetailsCard() {
   const [imageUrl, setImageUrl] = useState("");
 
   async function fetchProductDetails() {
+    setShowLoader(true);
     const productData = await axios.get(`${single_product_url}${productid}`);
     const Details = productData.data;
     setproductdetail(Details);
+    setShowLoader(false);
   }
   useEffect(() => {
     fetchProductDetails();
@@ -30,6 +34,12 @@ function ProductDetailsCard() {
 
   return (
     <section>
+      {showLoder && (
+        <div className="absolute w-full h-full backdrop-blur-lg   flex justify-center items-center z-10 left-0 top-0">
+          {/* <ClockLoader color="#ff0500" /> */}
+          <GridLoader color="#36d7b7" />
+        </div>
+      )}
       <div className="relative mx-auto max-w-screen-xl px-4 py-8">
         <div className="grid gap-8 lg:grid-cols-4 lg:items-start">
           <div className="lg:col-span-2">
@@ -80,33 +90,37 @@ function ProductDetailsCard() {
               </div>
               <div className="border-b">
                 <table className="border-spacing-4 border-separate">
-                  <tr>
-                    <th>Available</th>
-                    <td>in stock</td>
-                  </tr>
-                  <tr>
-                    <th>SKU</th>
-                    <td>{productdetails.id}</td>
-                  </tr>
-                  <tr>
-                    <th>Brand</th>
-                    <td>{productdetails.company}</td>
-                  </tr>
+                  <tbody>
+                    <tr>
+                      <th>Available</th>
+                      <td>in stock</td>
+                    </tr>
+                    <tr>
+                      <th>SKU</th>
+                      <td>{productdetails.id}</td>
+                    </tr>
+                    <tr>
+                      <th>Brand</th>
+                      <td>{productdetails.company}</td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
               <div>
                 <table className="border-spacing-4 border-separate">
-                  <tr>
-                    <th>Colors</th>
-                    {productdetails.colors?.map((m) => (
-                      <td key={m}>
-                        <FaCircle
-                          className="text-[1.3rem]"
-                          style={{ color: m }}
-                        />
-                      </td>
-                    ))}
-                  </tr>
+                  <tbody>
+                    <tr>
+                      <th>Colors</th>
+                      {productdetails.colors?.map((m) => (
+                        <td key={m}>
+                          <FaCircle
+                            className="text-[1.3rem]"
+                            style={{ color: m }}
+                          />
+                        </td>
+                      ))}
+                    </tr>
+                  </tbody>
                 </table>
               </div>
 

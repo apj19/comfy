@@ -13,9 +13,11 @@ function NavBar() {
   return (
     <nav className="flex px-8 py-2  justify-between items-center text-[1.2rem]">
       <div>
-        <p className="text-[1.5rem] tracking-wider  font-['Hachi_Maru_Pop']">
-          Comfy
-        </p>
+        <Link to="/">
+          <p className="text-[1.5rem] tracking-wider  font-['Hachi_Maru_Pop']">
+            Comfy
+          </p>
+        </Link>
       </div>
 
       <div className="hidden md:block">

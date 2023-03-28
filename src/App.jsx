@@ -6,10 +6,11 @@ import Cart from "./pages/Cart";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import Product from "./pages/Product";
+import Footer from "./components/Footer";
 
 function App() {
   return (
-    <div className="min-w-[375px] max-w-[1440px] min-h-[100vh] font-['Poppins'] ">
+    <div className="min-w-[375px] max-w-[1440px] min-h-[100vh] font-['Poppins'] bg-gray-50  ">
       <NavBar />
 
       <Routes>
@@ -24,6 +25,7 @@ function App() {
 
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
+      <Footer />
     </div>
   );
 }

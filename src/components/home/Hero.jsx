@@ -20,9 +20,9 @@ function hero() {
 
             <div className="mt-4 md:mt-8">
               <Link to="product">
-                <p className="inline-block rounded bg-emerald-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-emerald-700 ">
-                  Shop
-                </p>
+                <button className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">
+                  Shop Now
+                </button>
               </Link>
             </div>
           </div>

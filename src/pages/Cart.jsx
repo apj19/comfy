@@ -40,78 +40,162 @@ function Cart() {
     },
   ];
   return (
-    <div className="flex flex-col mx-auto max-w-3xl p-6 space-y-4 sm:p-10 dark:bg-gray-900 dark:text-gray-100">
-      <h2 className="text-xl font-semibold">Your cart</h2>
-      <ul className="flex flex-col divide-y divide-gray-700">
-        {products.map((product) => (
-          <li
-            key={product.id}
-            className="flex flex-col py-6 sm:flex-row sm:justify-between"
+    <div className="bg-gray-100 dark:bg-gray-900  dark:nx-bg-neutral-900">
+      <div className="mx-auto max-w-2xl px-4 pt-16 pb-24 sm:px-6 lg:max-w-7xl lg:px-8">
+        <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+          Shopping Cart
+        </h1>
+        <form className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
+          <section
+            aria-labelledby="cart-heading"
+            className="lg:col-span-8 bg-white dark:bg-slate-600"
           >
-            <div className="flex w-full space-x-2 sm:space-x-4">
-              <img
-                className="flex-shrink-0 object-contain w-20 h-20 dark:border-transparent rounded outline-none sm:w-32 sm:h-32 dark:bg-gray-500"
-                src={product.imageSrc}
-                alt={product.name}
-              />
-              <div className="flex flex-col justify-between w-full pb-4">
-                <div className="flex justify-between w-full pb-2 space-x-2">
-                  <div className="space-y-1">
-                    <h3 className="text-lg font-semibold leading-snug sm:pr-8">
-                      {product.name}
-                    </h3>
-                    <p className="text-sm dark:text-gray-400">
-                      {product.color}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-lg font-semibold">{product.price}</p>
+            <h2 id="cart-heading" className="sr-only">
+              Items in your shopping cart
+            </h2>
+
+            <ul
+              role="list"
+              className="divide-y divide-gray-200 border-t border-b border-gray-200"
+            >
+              {products.map((product, productIdx) => (
+                <div key={product.id} className="px-4">
+                  <li className="flex py-6 sm:py-6 ">
+                    <div className="flex-shrink-0">
+                      <img
+                        src={product.imageSrc}
+                        alt={product.name}
+                        className="h-24 w-24 rounded-md object-contain object-center sm:h-38 sm:w-38"
+                      />
+                    </div>
+
+                    <div className="ml-4 flex flex-1 flex-col justify-between sm:ml-6">
+                      <div className="relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
+                        <div>
+                          <div className="flex justify-between">
+                            <h3 className="text-sm">
+                              <a
+                                href={product.href}
+                                className="font-medium text-lg text-gray-700 dark:text-white"
+                              >
+                                {product.name}
+                              </a>
+                            </h3>
+                          </div>
+                          <div className="mt-1 flex text-sm">
+                            <p className="text-gray-500 dark:text-gray-200">
+                              {product.color}
+                            </p>
+                            {product.size ? (
+                              <p className="ml-4 border-l border-gray-200 pl-4 text-gray-500 dark:text-gray-200">
+                                {product.size}
+                              </p>
+                            ) : null}
+                          </div>
+                          <div className="mt-1 flex items-end">
+                            <p className="text-xs line-through font-medium text-gray-500 dark:text-gray-100">
+                              {product.originalPrice}
+                            </p>
+                            <p className="text-sm font-medium text-gray-900 dark:text-white">
+                              &nbsp;&nbsp;{product.price}
+                            </p>
+                            &nbsp;&nbsp;
+                            <p className="text-sm font-medium text-green-500">
+                              {product.discount}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <div className="flex mb-2">
+                    <div className="flex min-w-24 dark:text-white">
+                      <button
+                        type="button"
+                        className="h-7 w-7 rounded-full border border-[#e0e0e0]"
+                      >
+                        -
+                      </button>
+                      <input
+                        type="text"
+                        className="h-7 w-9 text-center mx-1 border dark:bg-white dark:text-black"
+                        value={1}
+                        onChange={() => {}}
+                      />
+                      <button
+                        type="button"
+                        className="h-7 w-7 rounded-full border border-[#e0e0e0] flex justify-center items-center"
+                      >
+                        +
+                      </button>
+                    </div>
+                    <div className="ml-4 flex flex-1 sm:ml-6 dark:text-white">
+                      <button className="font-medium mr-4 ">
+                        SAVE FOR LATTER
+                      </button>
+                      <button className="font-medium">REMOVE</button>
+                    </div>
                   </div>
                 </div>
-                <div className="flex text-sm divide-x">
-                  <button
-                    type="button"
-                    className="flex items-center px-2 py-1 pl-0 space-x-1"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 512 512"
-                      className="w-4 h-4 fill-current"
-                    >
-                      <path d="M96,472a23.82,23.82,0,0,0,23.579,24H392.421A23.82,23.82,0,0,0,416,472V152H96Zm32-288H384V464H128Z"></path>
-                      <rect width="32" height="200" x="168" y="216"></rect>
-                      <rect width="32" height="200" x="240" y="216"></rect>
-                      <rect width="32" height="200" x="312" y="216"></rect>
-                      <path d="M328,88V40c0-13.458-9.488-24-21.6-24H205.6C193.488,16,184,26.542,184,40V88H64v32H448V88ZM216,48h80V88H216Z"></path>
-                    </svg>
-                    <span>Remove</span>
-                  </button>
-                  <button
-                    type="button"
-                    className="flex items-center px-2 py-1 space-x-1"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 512 512"
-                      className="w-4 h-4 fill-current"
-                    >
-                      <path d="M453.122,79.012a128,128,0,0,0-181.087.068l-15.511,15.7L241.142,79.114l-.1-.1a128,128,0,0,0-181.02,0l-6.91,6.91a128,128,0,0,0,0,181.019L235.485,449.314l20.595,21.578.491-.492.533.533L276.4,450.574,460.032,266.94a128.147,128.147,0,0,0,0-181.019ZM437.4,244.313,256.571,425.146,75.738,244.313a96,96,0,0,1,0-135.764l6.911-6.91a96,96,0,0,1,135.713-.051l38.093,38.787,38.274-38.736a96,96,0,0,1,135.765,0l6.91,6.909A96.11,96.11,0,0,1,437.4,244.313Z"></path>
-                    </svg>
-                    <span>Add to favorites</span>
-                  </button>
+              ))}
+            </ul>
+          </section>
+
+          {/* Order summary */}
+          <section
+            aria-labelledby="summary-heading"
+            className="mt-16 rounded-md bg-white dark:bg-slate-600 lg:col-span-4 lg:mt-0 lg:p-0"
+          >
+            <h2
+              id="summary-heading"
+              className=" px-4 py-3 sm:p-4 border-b border-gray-200 text-lg font-medium text-gray-900 dark:text-gray-200"
+            >
+              Price Details
+            </h2>
+
+            <div>
+              <dl className=" space-y-1  px-6 py-4 sm:p-6">
+                <div className="flex items-center justify-between">
+                  <dt className="text-sm text-gray-800 dark:text-gray-200">
+                    Price (3 item)
+                  </dt>
+                  <dd className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                    ₹ 52,398
+                  </dd>
                 </div>
+                <div className="flex items-center justify-between pt-4">
+                  <dt className="flex items-center text-sm text-gray-800 dark:text-gray-200">
+                    <span>Discount</span>
+                  </dt>
+                  <dd className="text-sm font-medium text-green-700 dark:text-green-400">
+                    - ₹ 3,431
+                  </dd>
+                </div>
+                <div className="flex items-center justify-between py-4">
+                  <dt className="flex text-sm text-gray-800 dark:text-gray-200">
+                    <span>Delivery Charges</span>
+                  </dt>
+                  <dd className="text-sm font-medium text-green-700 dark:text-green-400">
+                    Free
+                  </dd>
+                </div>
+                <div className="flex items-center justify-between py-4 border-y border-dashed ">
+                  <dt className="text-base font-medium text-gray-900 dark:text-white">
+                    Total Amount
+                  </dt>
+                  <dd className="text-base font-medium text-gray-900 dark:text-white">
+                    ₹ 48,967
+                  </dd>
+                </div>
+              </dl>
+              <div className="px-6 pb-4 font-medium text-green-700 dark:text-green-400">
+                You will save ₹ 3,431 on this order
               </div>
             </div>
-          </li>
-        ))}
-      </ul>
-      <div className="space-y-1 text-right">
-        <p>
-          Total amount:
-          <span className="font-semibold"> ₹48,967</span>
-        </p>
+          </section>
+        </form>
       </div>
-      <div className="flex justify-end space-x-4">
+      <div className="flex justify-center space-x-4 pb-8">
         <button
           type="button"
           className="px-6 py-2 border rounded-md dark:border-violet-400"
