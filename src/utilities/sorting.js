@@ -1,7 +1,9 @@
-function sortProduct(ProductList,type){
+function sortProduct(list,type){
+  let ProductList= [...list];
+  let returnlist=[];
     switch (type) {
         case 'sortA_Z':
-            ProductList.sort(
+          returnlist= ProductList.sort(
                 (str1, str2) => str2.name - str1.name
               );
           break;
@@ -9,21 +11,21 @@ function sortProduct(ProductList,type){
             ProductList.sort(
                 (str1, str2) => str2.name - str1.name
               );
-              ProductList.reverse();
+              returnlist= ProductList.reverse();
 
           break;
 
           case 'PriceLow_High':
             ProductList.sort((str1, str2) => str2.price - str1.price);
-            ProductList.reverse();
+            returnlist= ProductList.reverse();
           break;
           case 'PriceHigh_Low':
-            ProductList.sort((str1, str2) => str2.price - str1.price);
+            returnlist=ProductList.sort((str1, str2) => str2.price - str1.price);
           break;
       }
 
 
-      return ProductList;
+      return returnlist;
 }
 
 export {sortProduct}

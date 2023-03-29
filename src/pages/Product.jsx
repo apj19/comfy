@@ -11,30 +11,120 @@ import { sortProduct } from "../utilities/sorting";
 
 function Product() {
   const [allProducts, setAllProducts] = useState([]);
+  const [orignalProductsList, setorignalProductsList] = useState([]);
+
   const [showLoder, setShowLoader] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
-  const [sortType, setSortType] = useState("sortA_Z");
+  const [selectCatogory, setSelectCatogory] = useState(1);
+  const [selectCompany, setselectCompany] = useState("all");
 
   async function featuredProducts() {
     setShowLoader(true);
-    let currentList;
+
     const fetchproductList = await axios.get(products_url);
 
-    sortProduct(fetchproductList.data, sortType);
     setAllProducts(fetchproductList.data);
+    setorignalProductsList(fetchproductList.data);
 
     setShowLoader(false);
   }
 
   function handleSorting(e) {
-    setSortType(e.target.value);
+    const currentproducts = [...allProducts];
+
+    switch (e.target.value) {
+      case "sortA_Z":
+        // currentproducts.reverse();
+        currentproducts.sort((str1, str2) => {
+          let fa = str1.name.toLowerCase(),
+            fb = str2.name.toLowerCase();
+
+          if (fa < fb) {
+            return -1;
+          }
+          if (fa > fb) {
+            return 1;
+          }
+          return 0;
+        });
+        break;
+      case "sortZ_A":
+        currentproducts
+          .sort((str1, str2) => {
+            let fa = str1.name.toLowerCase(),
+              fb = str2.name.toLowerCase();
+
+            if (fa < fb) {
+              return -1;
+            }
+            if (fa > fb) {
+              return 1;
+            }
+            return 0;
+          })
+          .reverse();
+        break;
+      case "PriceLow_High":
+        currentproducts.sort((str1, str2) => str1.price - str2.price);
+        break;
+      case "PriceHigh_Low":
+        currentproducts.sort((str1, str2) => str1.price - str2.price).reverse();
+        break;
+    }
+
+    setAllProducts(currentproducts);
+  }
+
+  function handleSearch(e) {
+    let currentproducts;
+    if (selectCompany != "all") {
+      currentproducts = [...allProducts];
+    } else {
+      currentproducts = [...orignalProductsList];
+    }
+
+    let filteredProducts = currentproducts.filter((f) =>
+      f.name.includes(e.target.value)
+    );
+    setAllProducts(filteredProducts);
+  }
+
+  function handleCatogeryFilter(e) {
+    const currentproducts = [...orignalProductsList];
+    if (e.target.value == "all") {
+      setAllProducts(orignalProductsList);
+    } else {
+      let filteredProducts = currentproducts.filter(
+        (f) => f.category == e.target.value
+      );
+      setAllProducts(filteredProducts);
+    }
+    // console.log(e.target.value);
+  }
+  function handleCompanyFilter(e) {
+    const currentproducts = [...allProducts];
+    if (e.target.value == "all") {
+      setAllProducts(currentproducts);
+    } else {
+      let filteredProducts = currentproducts.filter(
+        (f) => f.company == e.target.value
+      );
+      setAllProducts(filteredProducts);
+    }
+    // console.log(e.target.value);
+  }
+
+  function clearFilters() {
+    setAllProducts(orignalProductsList);
+    setSelectCatogory(1);
+    setselectCompany("all");
   }
 
   useEffect(() => {
     featuredProducts();
-  }, [sortType]);
+  }, []);
   return (
-    <main>
+    <main className="px-4">
       {showLoder && (
         <div className="absolute w-full h-full backdrop-blur-lg   flex justify-center items-center z-10 left-0 top-0">
           {/* <ClockLoader color="#ff0500" /> */}
@@ -43,13 +133,121 @@ function Product() {
       )}
 
       <section className="flex ">
-        <section className="hidden md:inline-block sticky w-[200px] h-full left-0 top-12 border ">
-          sadasfsdfsd sadasfsdfsd sadasfsdfsd sadasfsdfsd sadasfsdfsd
-          sadasfsdfsd sadasfsdfsd sadasfsdfsd sadasfsdfsd sadasfsdfsd
-          sadasfsdfsd sadasfsdfsd sadasfsdfsd
+        <section className="hidden md:inline-block sticky w-[200px] h-full left-0 top-12  mt-5 ">
+          <div className="flex flex-col px-2">
+            <input
+              onChange={(e) => handleSearch(e)}
+              type="text"
+              className="border"
+              placeholder="Search"
+            />
+            <div className="mt-6 ">
+              <p className="font-bold">Category</p>
+              <div className="text-[#859baf] flex flex-col gap-2 items-start mt-2">
+                <button
+                  onClick={(e) => {
+                    setSelectCatogory(1);
+                    handleCatogeryFilter(e);
+                  }}
+                  className={`${selectCatogory == 1 ? "border-b" : ""}`}
+                  value="all"
+                >
+                  All
+                </button>
+                <button
+                  onClick={(e) => {
+                    setSelectCatogory(2);
+                    handleCatogeryFilter(e);
+                  }}
+                  className={`${selectCatogory == 2 ? "border-b" : ""}`}
+                  value="office"
+                >
+                  Office
+                </button>
+                <button
+                  onClick={(e) => {
+                    setSelectCatogory(3);
+                    handleCatogeryFilter(e);
+                  }}
+                  className={`${selectCatogory == 3 ? "border-b" : ""}`}
+                  value="living room"
+                >
+                  Living Room
+                </button>
+                <button
+                  onClick={(e) => {
+                    setSelectCatogory(4);
+                    handleCatogeryFilter(e);
+                  }}
+                  className={`${selectCatogory == 4 ? "border-b" : ""}`}
+                  value="kitchen"
+                >
+                  Kitchen
+                </button>
+                <button
+                  onClick={(e) => {
+                    setSelectCatogory(5);
+                    handleCatogeryFilter(e);
+                  }}
+                  className={`${selectCatogory == 5 ? "border-b" : ""}`}
+                  value="bedroom"
+                >
+                  Bedroom
+                </button>
+                <button
+                  onClick={(e) => {
+                    setSelectCatogory(6);
+                    handleCatogeryFilter(e);
+                  }}
+                  className={`${selectCatogory == 6 ? "border-b" : ""}`}
+                  value="dining"
+                >
+                  Dining
+                </button>
+                <button
+                  onClick={(e) => {
+                    setSelectCatogory(7);
+                    handleCatogeryFilter(e);
+                  }}
+                  className={`${selectCatogory == 7 ? "border-b" : ""}`}
+                  value="kids"
+                >
+                  Kids
+                </button>
+              </div>
+            </div>
+
+            <div className="mt-6 mb-4 ">
+              <p className="font-bold mb-2">Company</p>
+              <select
+                onChange={(e) => {
+                  // console.log(e.target.value);
+                  setselectCompany(e.target.value);
+                  handleCompanyFilter(e);
+                }}
+                className="w-[50%] border"
+                value={selectCompany}
+              >
+                <option value="all">All</option>
+                <option value="marcos">Marcos</option>
+                <option value="liddy">Liddy</option>
+                <option value="ikea">Ikea</option>
+                <option value="caressa">Caressa</option>
+              </select>
+            </div>
+            <div>
+              <button
+                onClick={clearFilters}
+                className="text-white bg-red-500 p-2 rounded-md"
+              >
+                Clear Filters
+              </button>
+            </div>
+          </div>
         </section>
+
         <div className="w-[100%]">
-          <section className=" flex flex-col md:flex-row justify-center items-center py-4  px-8 border-b gap-8">
+          <section className=" flex flex-col md:flex-row justify-center items-center py-4  px-8 border-b mb-2 gap-8">
             <div className="flex gap-4">
               <button
                 onClick={() => setShowDetails(false)}
@@ -81,20 +279,21 @@ function Product() {
             </div>
           </section>
 
-          {!showDetails && (
+          {!showDetails && allProducts.length > 0 && (
             <section className="grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-2 px-8 gap-4">
               {allProducts.map((m, i) => (
                 <Card key={i} productDetails={m} />
               ))}
             </section>
           )}
-          {showDetails && (
+          {showDetails && allProducts.length > 0 && (
             <section className="grid  grid-cols-1 px-8 gap-4">
               {allProducts.map((m, i) => (
                 <DetailCard key={i} productDetails={m} />
               ))}
             </section>
           )}
+          {allProducts.length <= 0 && <p>No product Found</p>}
         </div>
       </section>
     </main>
