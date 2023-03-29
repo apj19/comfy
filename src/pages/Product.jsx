@@ -8,8 +8,15 @@ import { GridLoader } from "react-spinners";
 import DetailCard from "../components/DetailCard";
 import { BsFillGridFill, BsList } from "react-icons/bs";
 import { sortProduct } from "../utilities/sorting";
+import { useSelector, useDispatch } from "react-redux";
+import { setComany, setCatgory } from "../features/filterSlice";
 
 function Product() {
+  const reduxCompany = useSelector((state) => state.filter.company);
+  const reduxCategory = useSelector((state) => state.filter.category);
+
+  const dispatch = useDispatch();
+
   const [allProducts, setAllProducts] = useState([]);
   const [orignalProductsList, setorignalProductsList] = useState([]);
 
@@ -17,6 +24,7 @@ function Product() {
   const [showDetails, setShowDetails] = useState(false);
   const [selectCatogory, setSelectCatogory] = useState(1);
   const [selectCompany, setselectCompany] = useState("all");
+  const [selectCat, setselectcat] = useState("all");
 
   async function featuredProducts() {
     setShowLoader(true);
@@ -113,6 +121,41 @@ function Product() {
     }
     // console.log(e.target.value);
   }
+  let tcompany = "all";
+  let tcatogry = "all";
+  function allFilters(mycat, mycompany) {
+    // console.log("filter function ran");
+    // console.log("company test", testcomany);
+    let cat;
+    let comp;
+    if (mycat == "") {
+      cat = selectCat;
+    } else {
+      cat = mycat;
+    }
+
+    if (mycompany == "") {
+      comp = selectCompany;
+    } else {
+      comp = mycompany;
+    }
+    console.log("current :catogery", cat, "Current company", comp);
+
+    let filteredProducts = orignalProductsList;
+
+    if (cat == "all") {
+      filteredProducts = orignalProductsList;
+    } else {
+      filteredProducts = filteredProducts.filter((f) => f.category == cat);
+    }
+
+    if (comp == "all") {
+    } else {
+      filteredProducts = filteredProducts.filter((f) => f.company == comp);
+    }
+
+    setAllProducts(filteredProducts);
+  }
 
   function clearFilters() {
     setAllProducts(orignalProductsList);
@@ -147,7 +190,11 @@ function Product() {
                 <button
                   onClick={(e) => {
                     setSelectCatogory(1);
-                    handleCatogeryFilter(e);
+                    // handleCatogeryFilter(e);
+                    tcatogry = e.target.value;
+                    dispatch(setCatgory(e.target.value));
+                    setselectcat(e.target.value);
+                    allFilters(e.target.value, "");
                   }}
                   className={`${selectCatogory == 1 ? "border-b" : ""}`}
                   value="all"
@@ -157,7 +204,11 @@ function Product() {
                 <button
                   onClick={(e) => {
                     setSelectCatogory(2);
-                    handleCatogeryFilter(e);
+                    // handleCatogeryFilter(e);
+                    tcatogry = e.target.value;
+                    dispatch(setCatgory(e.target.value));
+                    setselectcat(e.target.value);
+                    allFilters(e.target.value, "");
                   }}
                   className={`${selectCatogory == 2 ? "border-b" : ""}`}
                   value="office"
@@ -167,7 +218,11 @@ function Product() {
                 <button
                   onClick={(e) => {
                     setSelectCatogory(3);
-                    handleCatogeryFilter(e);
+                    tcatogry = e.target.value;
+                    dispatch(setCatgory(e.target.value));
+                    // handleCatogeryFilter(e);
+                    setselectcat(e.target.value);
+                    allFilters(e.target.value, "");
                   }}
                   className={`${selectCatogory == 3 ? "border-b" : ""}`}
                   value="living room"
@@ -177,7 +232,11 @@ function Product() {
                 <button
                   onClick={(e) => {
                     setSelectCatogory(4);
-                    handleCatogeryFilter(e);
+                    tcatogry = e.target.value;
+                    dispatch(setCatgory(e.target.value));
+                    // handleCatogeryFilter(e);
+                    setselectcat(e.target.value);
+                    allFilters(e.target.value, "");
                   }}
                   className={`${selectCatogory == 4 ? "border-b" : ""}`}
                   value="kitchen"
@@ -187,7 +246,11 @@ function Product() {
                 <button
                   onClick={(e) => {
                     setSelectCatogory(5);
-                    handleCatogeryFilter(e);
+                    tcatogry = e.target.value;
+                    dispatch(setCatgory(e.target.value));
+                    // handleCatogeryFilter(e);
+                    setselectcat(e.target.value);
+                    allFilters(e.target.value, "");
                   }}
                   className={`${selectCatogory == 5 ? "border-b" : ""}`}
                   value="bedroom"
@@ -197,7 +260,11 @@ function Product() {
                 <button
                   onClick={(e) => {
                     setSelectCatogory(6);
-                    handleCatogeryFilter(e);
+                    tcatogry = e.target.value;
+                    dispatch(setCatgory(e.target.value));
+                    // handleCatogeryFilter(e);
+                    setselectcat(e.target.value);
+                    allFilters(e.target.value, "");
                   }}
                   className={`${selectCatogory == 6 ? "border-b" : ""}`}
                   value="dining"
@@ -207,7 +274,11 @@ function Product() {
                 <button
                   onClick={(e) => {
                     setSelectCatogory(7);
-                    handleCatogeryFilter(e);
+                    tcatogry = e.target.value;
+                    dispatch(setCatgory(e.target.value));
+                    // handleCatogeryFilter(e);
+                    setselectcat(e.target.value);
+                    allFilters(e.target.value, "");
                   }}
                   className={`${selectCatogory == 7 ? "border-b" : ""}`}
                   value="kids"
@@ -223,7 +294,11 @@ function Product() {
                 onChange={(e) => {
                   // console.log(e.target.value);
                   setselectCompany(e.target.value);
-                  handleCompanyFilter(e);
+                  // handleCompanyFilter(e);
+                  tcompany = e.target.value;
+                  dispatch(setComany(e.target.value));
+                  // console.log("selected", selectCompany);
+                  allFilters("", e.target.value);
                 }}
                 className="w-[50%] border"
                 value={selectCompany}
