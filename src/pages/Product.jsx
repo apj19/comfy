@@ -7,6 +7,8 @@ import Card from "../components/Card";
 import { GridLoader } from "react-spinners";
 import DetailCard from "../components/DetailCard";
 import { BsFillGridFill, BsList } from "react-icons/bs";
+import { FaRupeeSign } from "react-icons/fa";
+import { FaXbox } from "react-icons/fa";
 
 import { useSelector, useDispatch } from "react-redux";
 import { setComany, setCatgory } from "../features/filterSlice";
@@ -28,8 +30,9 @@ function Product() {
   const [selectCat, setselectcat] = useState("all");
   const [selectColor, setSelectColor] = useState("all");
   const [selectfiltercolor, setselectfiltercolor] = useState("all");
+  const [showMobilefilter, setshowMobilefilter] = useState(false);
 
-  const [selectPricefilter, setselectPricefilter] = useState("100");
+  const [selectPricefilter, setselectPricefilter] = useState("330000");
 
   const colorsArray = ["#ff0000", "#00ff00", "#0000ff", "#000", "#ffb900"];
 
@@ -105,10 +108,11 @@ function Product() {
     setAllProducts(filteredProducts);
   }
 
-  function allFilters(mycat, mycompany, incolor) {
+  function allFilters(mycat, mycompany, incolor, inprice = 330000) {
     let comp;
     let cat;
     let color;
+    let price;
     // console.log("state values", selectCat, selectCompany, selectfiltercolor);
     // console.log("input values", mycat, mycompany, color);
 
@@ -128,6 +132,12 @@ function Product() {
       color = selectfiltercolor;
     } else {
       color = incolor;
+    }
+
+    if (inprice == "" || inprice == undefined) {
+      price = selectPricefilter;
+    } else {
+      price = inprice;
     }
     // console.log("current :catogery", cat, "Current company", comp);
 
@@ -150,6 +160,14 @@ function Product() {
         f.colors.includes(color)
       );
     }
+
+    if (price == 330000) {
+    } else {
+      filteredProducts = filteredProducts.filter(
+        (f) => parseInt(f.price) < parseInt(price)
+      );
+    }
+
     setfilteredProductList(filteredProducts);
     setAllProducts(filteredProducts);
   }
@@ -161,6 +179,7 @@ function Product() {
 
     setSelectColor("all");
     setselectfiltercolor("all");
+    setselectPricefilter(330000);
   }
 
   useEffect(() => {
@@ -174,8 +193,8 @@ function Product() {
         </div>
       )}
 
-      <section className="flex ">
-        <section className="hidden md:inline-block sticky w-[200px] h-full left-0 top-12  mt-5 ">
+      <section className="flex flex-col md:flex-row ">
+        <section className=" hidden md:inline-block md:sticky md:w-[200px] md:h-full md:left-0 md:top-5  mt-5  ">
           <div className="flex flex-col px-2">
             <input
               onChange={(e) => handleSearch(e)}
@@ -324,15 +343,18 @@ function Product() {
 
             <div className="mt-2 mb-4 ">
               <p className="font-bold mb-2">Price</p>
-              <p>{selectPricefilter}</p>
+              <p>
+                <FaRupeeSign className="inline-block" /> {selectPricefilter}
+              </p>
               <input
                 className="w-[80%] cursor-pointer"
                 type="range"
                 min="1"
-                max="100"
+                max="330000"
                 onChange={(e) => {
                   setselectPricefilter(e.target.value);
-                  console.log(selectPricefilter);
+                  // console.log(selectPricefilter);
+                  allFilters("", "", "", e.target.value);
                 }}
                 value={selectPricefilter}
               />
@@ -349,8 +371,203 @@ function Product() {
           </div>
         </section>
 
+        <section className="md:hidden flex justify-center items-center">
+          <button
+            onClick={() => setshowMobilefilter(true)}
+            className="mt-3 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white"
+          >
+            Filters
+          </button>
+
+          {showMobilefilter && (
+            <div className="absolute w-full py-5 top-16 left-0 animate__animated animate__fadeInLeft flex flex-col items-center z-10 bg-gray-50">
+              <button
+                onClick={() => setshowMobilefilter(false)}
+                className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white"
+              >
+                Close
+              </button>
+
+              <div className="flex flex-col px-2 mt-4">
+                <input
+                  onChange={(e) => handleSearch(e)}
+                  type="text"
+                  className="border"
+                  placeholder="Search"
+                />
+                <div className="mt-6 ">
+                  <p className="font-bold">Category</p>
+                  <div className="text-[#859baf] flex flex-col gap-2 items-start mt-2">
+                    <button
+                      onClick={(e) => {
+                        setSelectCatogory(1);
+                        setselectcat(e.target.value);
+                        allFilters(e.target.value, "", "");
+                      }}
+                      className={`${selectCatogory == 1 ? "border-b" : ""}`}
+                      value="all"
+                    >
+                      All
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        setSelectCatogory(2);
+
+                        setselectcat(e.target.value);
+                        allFilters(e.target.value, "", "");
+                      }}
+                      className={`${selectCatogory == 2 ? "border-b" : ""}`}
+                      value="office"
+                    >
+                      Office
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        setSelectCatogory(3);
+
+                        setselectcat(e.target.value);
+                        allFilters(e.target.value, "", "");
+                      }}
+                      className={`${selectCatogory == 3 ? "border-b" : ""}`}
+                      value="living room"
+                    >
+                      Living Room
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        setSelectCatogory(4);
+
+                        setselectcat(e.target.value);
+                        allFilters(e.target.value, "", "");
+                      }}
+                      className={`${selectCatogory == 4 ? "border-b" : ""}`}
+                      value="kitchen"
+                    >
+                      Kitchen
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        setSelectCatogory(5);
+
+                        setselectcat(e.target.value);
+                        allFilters(e.target.value, "", "");
+                      }}
+                      className={`${selectCatogory == 5 ? "border-b" : ""}`}
+                      value="bedroom"
+                    >
+                      Bedroom
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        setSelectCatogory(6);
+
+                        setselectcat(e.target.value);
+                        allFilters(e.target.value, "", "");
+                      }}
+                      className={`${selectCatogory == 6 ? "border-b" : ""}`}
+                      value="dining"
+                    >
+                      Dining
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        setSelectCatogory(7);
+
+                        setselectcat(e.target.value);
+                        allFilters(e.target.value, "", "");
+                      }}
+                      className={`${selectCatogory == 7 ? "border-b" : ""}`}
+                      value="kids"
+                    >
+                      Kids
+                    </button>
+                  </div>
+                </div>
+
+                <div className="mt-2 mb-4 ">
+                  <p className="font-bold mb-2">Company</p>
+                  <select
+                    onChange={(e) => {
+                      setselectCompany(e.target.value);
+                      allFilters("", e.target.value, "");
+                    }}
+                    className="w-[50%] border"
+                    value={selectCompany}
+                  >
+                    <option value="all">All</option>
+                    <option value="marcos">Marcos</option>
+                    <option value="liddy">Liddy</option>
+                    <option value="ikea">Ikea</option>
+                    <option value="caressa">Caressa</option>
+                  </select>
+                </div>
+
+                <div className="mt-2 mb-4 ">
+                  <p className="font-bold">Colors</p>
+                  <div className="flex gap-2 justify-start items-center">
+                    <button
+                      className={` ${selectColor == "all" ? "border-b" : ""}`}
+                      value="all"
+                      onClick={() => {
+                        setSelectColor("all");
+                        setselectfiltercolor(e.target.value);
+                        allFilters("", "", e.target.value);
+                      }}
+                    >
+                      {" "}
+                      All
+                    </button>
+                    {colorsArray.map((m, i) => (
+                      <button
+                        key={m}
+                        onClick={(e) => {
+                          setSelectColor(i);
+                          setselectfiltercolor(e.target.value);
+                          allFilters("", "", e.target.value);
+                        }}
+                        value={m}
+                        className={`border-2  rounded-full w-6 h-6  
+                  ${selectColor == i ? "border-black" : ""}`}
+                        style={{ backgroundColor: m }}
+                      ></button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mt-2 mb-4 ">
+                  <p className="font-bold mb-2">Price</p>
+                  <p>
+                    <FaRupeeSign className="inline-block" /> {selectPricefilter}
+                  </p>
+                  <input
+                    className="w-[80%] cursor-pointer"
+                    type="range"
+                    min="1"
+                    max="330000"
+                    onChange={(e) => {
+                      setselectPricefilter(e.target.value);
+                      // console.log(selectPricefilter);
+                      allFilters("", "", "", e.target.value);
+                    }}
+                    value={selectPricefilter}
+                  />
+                </div>
+
+                <div>
+                  <button
+                    onClick={clearFilters}
+                    className="text-white bg-red-500 p-2 rounded-md"
+                  >
+                    Clear Filters
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </section>
+
         <div className="w-[100%]">
-          <section className=" flex flex-col md:flex-row justify-center items-center py-4  px-8 border-b mb-2 gap-8">
+          <section className=" flex flex-col md:flex-row justify-center items-center py-4  px-8 border-b mb-2  gap-2 md:gap-8">
             <div className="flex gap-4">
               <button
                 onClick={() => setShowDetails(false)}

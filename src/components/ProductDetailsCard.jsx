@@ -95,7 +95,9 @@ function ProductDetailsCard() {
                   <tbody>
                     <tr>
                       <th>Available</th>
-                      <td>in stock</td>
+                      <td>
+                        {productdetails.stock > 0 ? "in stock" : "out of stock"}
+                      </td>
                     </tr>
                     <tr>
                       <th>SKU</th>
@@ -108,50 +110,55 @@ function ProductDetailsCard() {
                   </tbody>
                 </table>
               </div>
-              <div>
-                <table className="border-spacing-4 border-separate">
-                  <tbody>
-                    <tr>
-                      <th>Colors</th>
-                      {productdetails.colors?.map((m) => (
-                        <td key={m}>
-                          <FaCircle
-                            className="text-[1.3rem]"
-                            style={{ color: m }}
-                          />
-                        </td>
-                      ))}
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div className="flex mb-2">
-                <div className="flex min-w-24 dark:text-white">
-                  <button
-                    onClick={() => setQuantity(quantity - 1)}
-                    disabled={quantity == 1}
-                    type="button"
-                    className="h-7 w-7 rounded-full border border-[#e0e0e0]"
-                  >
-                    -
-                  </button>
-                  <p className="h-7 w-9 text-center mx-1 text-[1.3rem]">
-                    {quantity}
-                  </p>
 
-                  <button
-                    onClick={() => setQuantity(quantity + 1)}
-                    type="button"
-                    className="h-7 w-7 rounded-full border border-[#e0e0e0] flex justify-center items-center"
-                  >
-                    +
+              {productdetails.stock > 0 && (
+                <div>
+                  <div>
+                    <table className="border-spacing-4 border-separate">
+                      <tbody>
+                        <tr>
+                          <th>Colors</th>
+                          {productdetails.colors?.map((m) => (
+                            <td key={m}>
+                              <FaCircle
+                                className="text-[1.3rem]"
+                                style={{ color: m }}
+                              />
+                            </td>
+                          ))}
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="flex mb-2">
+                    <div className="flex min-w-24 dark:text-white">
+                      <button
+                        onClick={() => setQuantity(quantity - 1)}
+                        disabled={quantity == 1}
+                        type="button"
+                        className="h-7 w-7 rounded-full border border-[#e0e0e0]"
+                      >
+                        -
+                      </button>
+                      <p className="h-7 w-9 text-center mx-1 text-[1.3rem]">
+                        {quantity}
+                      </p>
+
+                      <button
+                        onClick={() => setQuantity(quantity + 1)}
+                        type="button"
+                        className="h-7 w-7 rounded-full border border-[#e0e0e0] flex justify-center items-center"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+
+                  <button className="w-full md:w-[200px] rounded bg-red-700 px-6 py-3 text-sm font-bold uppercase tracking-wide text-white">
+                    Add to cart
                   </button>
                 </div>
-              </div>
-
-              <button className="w-full md:w-[200px] rounded bg-red-700 px-6 py-3 text-sm font-bold uppercase tracking-wide text-white">
-                Add to cart
-              </button>
+              )}
             </div>
           </div>
         </div>
