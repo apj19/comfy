@@ -7,15 +7,13 @@ import Card from "../components/Card";
 import { GridLoader } from "react-spinners";
 import DetailCard from "../components/DetailCard";
 import { BsFillGridFill, BsList } from "react-icons/bs";
-import { sortProduct } from "../utilities/sorting";
+
 import { useSelector, useDispatch } from "react-redux";
 import { setComany, setCatgory } from "../features/filterSlice";
+import { FaCircle } from "react-icons/fa";
 
 function Product() {
-  const reduxCompany = useSelector((state) => state.filter.company);
-  const reduxCategory = useSelector((state) => state.filter.category);
-
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const [allProducts, setAllProducts] = useState([]);
   const [orignalProductsList, setorignalProductsList] = useState([]);
@@ -25,6 +23,9 @@ function Product() {
   const [selectCatogory, setSelectCatogory] = useState(1);
   const [selectCompany, setselectCompany] = useState("all");
   const [selectCat, setselectcat] = useState("all");
+  const [selectColor, setSelectColor] = useState("all");
+
+  const colorsArray = ["#ff0000", "#00ff00", "#0000ff", "#000", "#ffb900"];
 
   async function featuredProducts() {
     setShowLoader(true);
@@ -97,37 +98,9 @@ function Product() {
     setAllProducts(filteredProducts);
   }
 
-  function handleCatogeryFilter(e) {
-    const currentproducts = [...orignalProductsList];
-    if (e.target.value == "all") {
-      setAllProducts(orignalProductsList);
-    } else {
-      let filteredProducts = currentproducts.filter(
-        (f) => f.category == e.target.value
-      );
-      setAllProducts(filteredProducts);
-    }
-    // console.log(e.target.value);
-  }
-  function handleCompanyFilter(e) {
-    const currentproducts = [...allProducts];
-    if (e.target.value == "all") {
-      setAllProducts(currentproducts);
-    } else {
-      let filteredProducts = currentproducts.filter(
-        (f) => f.company == e.target.value
-      );
-      setAllProducts(filteredProducts);
-    }
-    // console.log(e.target.value);
-  }
-  let tcompany = "all";
-  let tcatogry = "all";
   function allFilters(mycat, mycompany) {
-    // console.log("filter function ran");
-    // console.log("company test", testcomany);
-    let cat;
     let comp;
+    let cat;
     if (mycat == "") {
       cat = selectCat;
     } else {
@@ -139,7 +112,7 @@ function Product() {
     } else {
       comp = mycompany;
     }
-    console.log("current :catogery", cat, "Current company", comp);
+    // console.log("current :catogery", cat, "Current company", comp);
 
     let filteredProducts = orignalProductsList;
 
@@ -170,7 +143,6 @@ function Product() {
     <main className="px-4">
       {showLoder && (
         <div className="absolute w-full h-full backdrop-blur-lg   flex justify-center items-center z-10 left-0 top-0">
-          {/* <ClockLoader color="#ff0500" /> */}
           <GridLoader color="#36d7b7" />
         </div>
       )}
@@ -190,9 +162,6 @@ function Product() {
                 <button
                   onClick={(e) => {
                     setSelectCatogory(1);
-                    // handleCatogeryFilter(e);
-                    tcatogry = e.target.value;
-                    dispatch(setCatgory(e.target.value));
                     setselectcat(e.target.value);
                     allFilters(e.target.value, "");
                   }}
@@ -204,9 +173,7 @@ function Product() {
                 <button
                   onClick={(e) => {
                     setSelectCatogory(2);
-                    // handleCatogeryFilter(e);
-                    tcatogry = e.target.value;
-                    dispatch(setCatgory(e.target.value));
+
                     setselectcat(e.target.value);
                     allFilters(e.target.value, "");
                   }}
@@ -218,9 +185,7 @@ function Product() {
                 <button
                   onClick={(e) => {
                     setSelectCatogory(3);
-                    tcatogry = e.target.value;
-                    dispatch(setCatgory(e.target.value));
-                    // handleCatogeryFilter(e);
+
                     setselectcat(e.target.value);
                     allFilters(e.target.value, "");
                   }}
@@ -232,9 +197,7 @@ function Product() {
                 <button
                   onClick={(e) => {
                     setSelectCatogory(4);
-                    tcatogry = e.target.value;
-                    dispatch(setCatgory(e.target.value));
-                    // handleCatogeryFilter(e);
+
                     setselectcat(e.target.value);
                     allFilters(e.target.value, "");
                   }}
@@ -246,9 +209,7 @@ function Product() {
                 <button
                   onClick={(e) => {
                     setSelectCatogory(5);
-                    tcatogry = e.target.value;
-                    dispatch(setCatgory(e.target.value));
-                    // handleCatogeryFilter(e);
+
                     setselectcat(e.target.value);
                     allFilters(e.target.value, "");
                   }}
@@ -260,9 +221,7 @@ function Product() {
                 <button
                   onClick={(e) => {
                     setSelectCatogory(6);
-                    tcatogry = e.target.value;
-                    dispatch(setCatgory(e.target.value));
-                    // handleCatogeryFilter(e);
+
                     setselectcat(e.target.value);
                     allFilters(e.target.value, "");
                   }}
@@ -274,9 +233,7 @@ function Product() {
                 <button
                   onClick={(e) => {
                     setSelectCatogory(7);
-                    tcatogry = e.target.value;
-                    dispatch(setCatgory(e.target.value));
-                    // handleCatogeryFilter(e);
+
                     setselectcat(e.target.value);
                     allFilters(e.target.value, "");
                   }}
@@ -292,12 +249,7 @@ function Product() {
               <p className="font-bold mb-2">Company</p>
               <select
                 onChange={(e) => {
-                  // console.log(e.target.value);
                   setselectCompany(e.target.value);
-                  // handleCompanyFilter(e);
-                  tcompany = e.target.value;
-                  dispatch(setComany(e.target.value));
-                  // console.log("selected", selectCompany);
                   allFilters("", e.target.value);
                 }}
                 className="w-[50%] border"
@@ -310,6 +262,32 @@ function Product() {
                 <option value="caressa">Caressa</option>
               </select>
             </div>
+
+            <div className="mt-6 mb-4 ">
+              <p className="font-bold">Colors</p>
+              <div className="flex gap-2 justify-start items-center">
+                <button
+                  className={` ${selectColor == "all" ? "border-b" : ""}`}
+                  value="all"
+                  onClick={() => setSelectColor("all")}
+                >
+                  {" "}
+                  All
+                </button>
+                {colorsArray.map((m, i) => (
+                  <button
+                    key={m}
+                    onClick={(e) => setSelectColor(i)}
+                    value={m}
+                    className={`border-2 bg-[${m}] rounded-full w-6 h-6  
+                  ${selectColor == i ? "border-black" : ""}`}
+                  ></button>
+                ))}
+              </div>
+            </div>
+
+            <div></div>
+
             <div>
               <button
                 onClick={clearFilters}

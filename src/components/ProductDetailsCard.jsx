@@ -26,6 +26,7 @@ function ProductDetailsCard() {
     setShowLoader(true);
     const productData = await axios.get(`${single_product_url}${productid}`);
     const Details = productData.data;
+    console.log(Details);
     setproductdetail(Details);
     setShowLoader(false);
   }
