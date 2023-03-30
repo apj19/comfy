@@ -17,6 +17,9 @@ function Product() {
 
   const [allProducts, setAllProducts] = useState([]);
   const [orignalProductsList, setorignalProductsList] = useState([]);
+  const [filteredProductList, setfilteredProductList] = useState([
+    ...allProducts,
+  ]);
 
   const [showLoder, setShowLoader] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
@@ -24,6 +27,9 @@ function Product() {
   const [selectCompany, setselectCompany] = useState("all");
   const [selectCat, setselectcat] = useState("all");
   const [selectColor, setSelectColor] = useState("all");
+  const [selectfiltercolor, setselectfiltercolor] = useState("all");
+
+  const [selectPricefilter, setselectPricefilter] = useState("100");
 
   const colorsArray = ["#ff0000", "#00ff00", "#0000ff", "#000", "#ffb900"];
 
@@ -86,10 +92,11 @@ function Product() {
 
   function handleSearch(e) {
     let currentproducts;
-    if (selectCompany != "all") {
-      currentproducts = [...allProducts];
+    // setfilteredProductList([...allProducts]);
+    if (filteredProductList.length == 0) {
+      currentproducts = orignalProductsList;
     } else {
-      currentproducts = [...orignalProductsList];
+      currentproducts = filteredProductList;
     }
 
     let filteredProducts = currentproducts.filter((f) =>
@@ -98,9 +105,13 @@ function Product() {
     setAllProducts(filteredProducts);
   }
 
-  function allFilters(mycat, mycompany) {
+  function allFilters(mycat, mycompany, incolor) {
     let comp;
     let cat;
+    let color;
+    // console.log("state values", selectCat, selectCompany, selectfiltercolor);
+    // console.log("input values", mycat, mycompany, color);
+
     if (mycat == "") {
       cat = selectCat;
     } else {
@@ -111,6 +122,12 @@ function Product() {
       comp = selectCompany;
     } else {
       comp = mycompany;
+    }
+
+    if (incolor == "") {
+      color = selectfiltercolor;
+    } else {
+      color = incolor;
     }
     // console.log("current :catogery", cat, "Current company", comp);
 
@@ -127,6 +144,13 @@ function Product() {
       filteredProducts = filteredProducts.filter((f) => f.company == comp);
     }
 
+    if (color == "all") {
+    } else {
+      filteredProducts = filteredProducts.filter((f) =>
+        f.colors.includes(color)
+      );
+    }
+    setfilteredProductList(filteredProducts);
     setAllProducts(filteredProducts);
   }
 
@@ -134,6 +158,9 @@ function Product() {
     setAllProducts(orignalProductsList);
     setSelectCatogory(1);
     setselectCompany("all");
+
+    setSelectColor("all");
+    setselectfiltercolor("all");
   }
 
   useEffect(() => {
@@ -163,7 +190,7 @@ function Product() {
                   onClick={(e) => {
                     setSelectCatogory(1);
                     setselectcat(e.target.value);
-                    allFilters(e.target.value, "");
+                    allFilters(e.target.value, "", "");
                   }}
                   className={`${selectCatogory == 1 ? "border-b" : ""}`}
                   value="all"
@@ -175,7 +202,7 @@ function Product() {
                     setSelectCatogory(2);
 
                     setselectcat(e.target.value);
-                    allFilters(e.target.value, "");
+                    allFilters(e.target.value, "", "");
                   }}
                   className={`${selectCatogory == 2 ? "border-b" : ""}`}
                   value="office"
@@ -187,7 +214,7 @@ function Product() {
                     setSelectCatogory(3);
 
                     setselectcat(e.target.value);
-                    allFilters(e.target.value, "");
+                    allFilters(e.target.value, "", "");
                   }}
                   className={`${selectCatogory == 3 ? "border-b" : ""}`}
                   value="living room"
@@ -199,7 +226,7 @@ function Product() {
                     setSelectCatogory(4);
 
                     setselectcat(e.target.value);
-                    allFilters(e.target.value, "");
+                    allFilters(e.target.value, "", "");
                   }}
                   className={`${selectCatogory == 4 ? "border-b" : ""}`}
                   value="kitchen"
@@ -211,7 +238,7 @@ function Product() {
                     setSelectCatogory(5);
 
                     setselectcat(e.target.value);
-                    allFilters(e.target.value, "");
+                    allFilters(e.target.value, "", "");
                   }}
                   className={`${selectCatogory == 5 ? "border-b" : ""}`}
                   value="bedroom"
@@ -223,7 +250,7 @@ function Product() {
                     setSelectCatogory(6);
 
                     setselectcat(e.target.value);
-                    allFilters(e.target.value, "");
+                    allFilters(e.target.value, "", "");
                   }}
                   className={`${selectCatogory == 6 ? "border-b" : ""}`}
                   value="dining"
@@ -235,7 +262,7 @@ function Product() {
                     setSelectCatogory(7);
 
                     setselectcat(e.target.value);
-                    allFilters(e.target.value, "");
+                    allFilters(e.target.value, "", "");
                   }}
                   className={`${selectCatogory == 7 ? "border-b" : ""}`}
                   value="kids"
@@ -245,12 +272,12 @@ function Product() {
               </div>
             </div>
 
-            <div className="mt-6 mb-4 ">
+            <div className="mt-2 mb-4 ">
               <p className="font-bold mb-2">Company</p>
               <select
                 onChange={(e) => {
                   setselectCompany(e.target.value);
-                  allFilters("", e.target.value);
+                  allFilters("", e.target.value, "");
                 }}
                 className="w-[50%] border"
                 value={selectCompany}
@@ -263,13 +290,17 @@ function Product() {
               </select>
             </div>
 
-            <div className="mt-6 mb-4 ">
+            <div className="mt-2 mb-4 ">
               <p className="font-bold">Colors</p>
               <div className="flex gap-2 justify-start items-center">
                 <button
                   className={` ${selectColor == "all" ? "border-b" : ""}`}
                   value="all"
-                  onClick={() => setSelectColor("all")}
+                  onClick={() => {
+                    setSelectColor("all");
+                    setselectfiltercolor(e.target.value);
+                    allFilters("", "", e.target.value);
+                  }}
                 >
                   {" "}
                   All
@@ -277,16 +308,35 @@ function Product() {
                 {colorsArray.map((m, i) => (
                   <button
                     key={m}
-                    onClick={(e) => setSelectColor(i)}
+                    onClick={(e) => {
+                      setSelectColor(i);
+                      setselectfiltercolor(e.target.value);
+                      allFilters("", "", e.target.value);
+                    }}
                     value={m}
-                    className={`border-2 bg-[${m}] rounded-full w-6 h-6  
+                    className={`border-2  rounded-full w-6 h-6  
                   ${selectColor == i ? "border-black" : ""}`}
+                    style={{ backgroundColor: m }}
                   ></button>
                 ))}
               </div>
             </div>
 
-            <div></div>
+            <div className="mt-2 mb-4 ">
+              <p className="font-bold mb-2">Price</p>
+              <p>{selectPricefilter}</p>
+              <input
+                className="w-[80%] cursor-pointer"
+                type="range"
+                min="1"
+                max="100"
+                onChange={(e) => {
+                  setselectPricefilter(e.target.value);
+                  console.log(selectPricefilter);
+                }}
+                value={selectPricefilter}
+              />
+            </div>
 
             <div>
               <button
