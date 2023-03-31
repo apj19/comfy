@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 function DetailCard({ productDetails }) {
   return (
     // <Link to={`/product/${productDetails.id}`}></Link>
-    <div className="p-4 grid grid-cols-1 md:grid-cols-2  gap-8 jusify-center items-center">
+    <div className="p-4 grid grid-cols-1 md:grid-cols-2  gap-8 jusify-center items-center -z-10">
       <img
         alt="Home"
         src={productDetails.image}

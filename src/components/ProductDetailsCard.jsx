@@ -1,16 +1,20 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { single_product_url } from "../utilities/EndPoints";
 import { useEffect } from "react";
 import { FaRupeeSign } from "react-icons/fa";
 import { FaCircle } from "react-icons/fa";
 import { GridLoader } from "react-spinners";
+import { AddtoCart } from "../features/cartSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 function ProductDetailsCard() {
   const { productid } = useParams();
   const [showLoder, setShowLoader] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [selectColor, setSelectColor] = useState(0);
+
   const [productdetails, setproductdetail] = useState({
     name: "",
     images: [
@@ -18,17 +22,44 @@ function ProductDetailsCard() {
         url: "",
       },
     ],
+    colors: [],
   });
+  const [color, setcolor] = useState("");
 
   const [imageUrl, setImageUrl] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   async function fetchProductDetails() {
     setShowLoader(true);
     const productData = await axios.get(`${single_product_url}${productid}`);
     const Details = productData.data;
-    console.log(Details);
+    // console.log(Details);
     setproductdetail(Details);
     setShowLoader(false);
+  }
+
+  function handleAddtoCart() {
+    let selectedcolor;
+    if (color == "") {
+      selectedcolor = productdetails.colors[0];
+    } else {
+      selectedcolor = color;
+    }
+
+    dispatch(
+      AddtoCart({
+        id: productdetails.id,
+        name: productdetails.name,
+        price: productdetails.price,
+        imgsrc: productdetails.images[0],
+        color: "dd",
+        pquantity: quantity,
+        pcolor: selectedcolor,
+        stock: productdetails.stock,
+      })
+    );
+    navigate("/cart");
   }
   useEffect(() => {
     fetchProductDetails();
@@ -42,10 +73,10 @@ function ProductDetailsCard() {
           <GridLoader color="#36d7b7" />
         </div>
       )}
-      <div className="relative mx-auto max-w-screen-xl px-4 py-8">
+      <div className=" mx-auto max-w-screen-xl px-4 py-8">
         <div className="grid gap-8 lg:grid-cols-4 lg:items-start">
           <div className="lg:col-span-2">
-            <div className="relative mt-4">
+            <div className=" mt-4">
               <img
                 alt="Tee"
                 src={imageUrl || productdetails.images[0].url}
@@ -96,7 +127,9 @@ function ProductDetailsCard() {
                     <tr>
                       <th>Available</th>
                       <td>
-                        {productdetails.stock > 0 ? "in stock" : "out of stock"}
+                        {productdetails.stock > 0
+                          ? "in stock : " + productdetails.stock
+                          : "out of stock"}
                       </td>
                     </tr>
                     <tr>
@@ -118,12 +151,20 @@ function ProductDetailsCard() {
                       <tbody>
                         <tr>
                           <th>Colors</th>
-                          {productdetails.colors?.map((m) => (
+                          {productdetails.colors?.map((m, i) => (
                             <td key={m}>
-                              <FaCircle
-                                className="text-[1.3rem]"
-                                style={{ color: m }}
-                              />
+                              <button
+                                onClick={(e) => {
+                                  setSelectColor(i);
+                                  setcolor(m);
+                                  // setselectfiltercolor(e.target.value);
+                                  // allFilters("", "", e.target.value);
+                                }}
+                                value={m}
+                                className={`border-2  rounded-full w-6 h-6  
+                  ${selectColor == i ? "border-black" : ""}`}
+                                style={{ backgroundColor: m }}
+                              ></button>
                             </td>
                           ))}
                         </tr>
@@ -146,6 +187,7 @@ function ProductDetailsCard() {
 
                       <button
                         onClick={() => setQuantity(quantity + 1)}
+                        disabled={quantity == productdetails.stock}
                         type="button"
                         className="h-7 w-7 rounded-full border border-[#e0e0e0] flex justify-center items-center"
                       >
@@ -154,7 +196,10 @@ function ProductDetailsCard() {
                     </div>
                   </div>
 
-                  <button className="w-full md:w-[200px] rounded bg-red-700 px-6 py-3 text-sm font-bold uppercase tracking-wide text-white">
+                  <button
+                    onClick={handleAddtoCart}
+                    className="w-full md:w-[200px] rounded bg-red-700 px-6 py-3 text-sm font-bold uppercase tracking-wide text-white"
+                  >
                     Add to cart
                   </button>
                 </div>

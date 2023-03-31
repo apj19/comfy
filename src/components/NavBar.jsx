@@ -6,8 +6,10 @@ import "animate.css";
 import { FaBars } from "react-icons/fa";
 import { Link } from "react-router-dom";
 // import { FaXbox } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
 
 function NavBar() {
+  const cartproductList = useSelector((state) => state.cart.cartitemsList);
   const [showMobileNav, setShowMobileNav] = useState(false);
 
   return (
@@ -41,7 +43,7 @@ function NavBar() {
           </button>
         </Link>
         <div className="absolute  left-4 bottom-2  rounded-full bg-my-color w-7 h-7 text-white flex justify-center items-center">
-          <p>0</p>
+          <p>{cartproductList.length}</p>
         </div>
         <button>Login</button>
       </div>
@@ -60,7 +62,7 @@ function NavBar() {
       {showMobileNav && (
         <div
           onClick={() => setShowMobileNav(false)}
-          className="absolute w-full h-full top-16 left-0 animate__animated animate__fadeInLeft flex flex-col items-center z-100 bg-gray-50"
+          className="absolute w-full h-full top-16 left-0 animate__animated animate__fadeInLeft flex flex-col items-center  bg-gray-50"
         >
           <ul className="flex flex-col justify-between items-center gap-8 mb-8">
             <Link to="/">
@@ -80,7 +82,7 @@ function NavBar() {
               </button>
             </Link>
             <div className="absolute  left-4 bottom-2  rounded-full bg-my-color w-7 h-7 text-white flex justify-center items-center">
-              <p>0</p>
+              <p>{cartproductList.length}</p>
             </div>
             <button>Login</button>
           </div>

@@ -11,7 +11,7 @@ import { FaRupeeSign } from "react-icons/fa";
 import { FaXbox } from "react-icons/fa";
 
 import { useSelector, useDispatch } from "react-redux";
-import { setComany, setCatgory } from "../features/filterSlice";
+
 import { FaCircle } from "react-icons/fa";
 
 function Product() {
@@ -184,6 +184,7 @@ function Product() {
 
   useEffect(() => {
     featuredProducts();
+    window.scrollTo(0, 0);
   }, []);
   return (
     <main className="px-4">
