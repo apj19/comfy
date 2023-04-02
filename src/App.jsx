@@ -8,7 +8,7 @@ import NotFound from "./pages/NotFound";
 import Product from "./pages/Product";
 import Footer from "./components/Footer";
 import SignIn from "./pages/SignIn";
-import SignUp from "./pages/signUp";
+import Up from "./pages/Up";
 
 function App() {
   return (
@@ -25,7 +25,7 @@ function App() {
         ></Route>
         <Route path="/cart" element={<Cart />}></Route>
         <Route path="/signin" element={<SignIn />}></Route>
-        <Route path="/signup" element={<SignUp />}></Route>
+        <Route path="/signup" element={<Up />}></Route>
 
         <Route path="*" element={<NotFound />}></Route>
       </Routes>

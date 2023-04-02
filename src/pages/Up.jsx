@@ -1,7 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { firebaseapp } from "../config/firebase";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
-function SignUp() {
+function Up() {
+  const { register, handleSubmit } = useForm();
+  const auth = getAuth(firebaseapp);
+
   return (
     <div className="flex items-center justify-center">
       <div className="flex items-center justify-center px-4 py-10 sm:px-6 lg:px-8 sm:py-16 lg:py-24">
@@ -21,7 +27,17 @@ function SignUp() {
             </Link>
           </p>
 
-          <form action="#" method="POST" className="mt-8">
+          <form
+            onSubmit={handleSubmit(async (data) => {
+              const userDetails = await createUserWithEmailAndPassword(
+                auth,
+                data.email,
+                data.Password
+              );
+              console.log(userDetails.user);
+            })}
+            className="mt-8"
+          >
             <div className="space-y-5">
               <div>
                 <label
@@ -35,6 +51,7 @@ function SignUp() {
                   <input
                     className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent py-2 px-3 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-gray-50 dark:focus:ring-gray-400 dark:focus:ring-offset-gray-900"
                     type="text"
+                    {...register("name", { required: true })}
                     placeholder="Enter You Full Name"
                     id="name"
                   ></input>
@@ -53,6 +70,7 @@ function SignUp() {
                   <input
                     className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent py-2 px-3 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-gray-50 dark:focus:ring-gray-400 dark:focus:ring-offset-gray-900"
                     type="email"
+                    {...register("email", { required: true })}
                     placeholder="Enter Your Email"
                     id="email"
                   ></input>
@@ -70,7 +88,8 @@ function SignUp() {
                 <div className="mt-2.5">
                   <input
                     className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent py-2 px-3 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-gray-50 dark:focus:ring-gray-400 dark:focus:ring-offset-gray-900"
-                    type="email"
+                    type="password"
+                    {...register("Password", { required: true })}
                     placeholder="Enter Your Password"
                     id="password"
                   ></input>
@@ -123,4 +142,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default Up;

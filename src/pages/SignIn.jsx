@@ -1,9 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { firebaseapp } from "../config/firebase";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 function SignIn() {
   const { register, handleSubmit } = useForm();
+  const auth = getAuth(firebaseapp);
   return (
     <div className="flex items-center justify-center">
       <div className="flex items-center justify-center px-4 py-10 sm:px-6 lg:px-8 sm:py-16 lg:py-24">
@@ -24,7 +27,14 @@ function SignIn() {
           </p>
 
           <form
-            onSubmit={handleSubmit((data) => console.log(data))}
+            onSubmit={handleSubmit(async (data) => {
+              const userDetails = await signInWithEmailAndPassword(
+                auth,
+                data.email,
+                data.password
+              );
+              console.log(userDetails.user);
+            })}
             className="mt-8"
           >
             <div className="space-y-5">
@@ -39,7 +49,7 @@ function SignIn() {
                 <div className="mt-2.5">
                   <input
                     className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent py-2 px-3 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-gray-50 dark:focus:ring-gray-400 dark:focus:ring-offset-gray-900"
-                    {...register("email")}
+                    {...register("email", { required: true })}
                     type="email"
                     placeholder="Email"
                   ></input>
@@ -68,7 +78,7 @@ function SignIn() {
                 <div className="mt-2.5">
                   <input
                     className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent py-2 px-3 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-gray-50 dark:focus:ring-gray-400 dark:focus:ring-offset-gray-900"
-                    {...register("password")}
+                    {...register("password", { required: true })}
                     type="password"
                     placeholder="Password"
                   ></input>
