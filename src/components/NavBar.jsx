@@ -45,7 +45,9 @@ function NavBar() {
         <div className="absolute  left-4 bottom-2  rounded-full bg-my-color w-7 h-7 text-white flex justify-center items-center">
           <p>{cartproductList.length}</p>
         </div>
-        <button>Login</button>
+        <Link to="/signin">
+          <button>Login</button>
+        </Link>
       </div>
       {!showMobileNav && (
         <button onClick={() => setShowMobileNav(true)} className="md:hidden">
@@ -84,7 +86,9 @@ function NavBar() {
             <div className="absolute  left-4 bottom-2  rounded-full bg-my-color w-7 h-7 text-white flex justify-center items-center">
               <p>{cartproductList.length}</p>
             </div>
-            <button>Login</button>
+            <Link to="/signin">
+              <button>Login</button>
+            </Link>
           </div>
         </div>
       )}
