@@ -8,14 +8,10 @@ import { GridLoader } from "react-spinners";
 import DetailCard from "../components/DetailCard";
 import { BsFillGridFill, BsList } from "react-icons/bs";
 import { FaRupeeSign } from "react-icons/fa";
-import { FaXbox } from "react-icons/fa";
-
-import { useSelector, useDispatch } from "react-redux";
-
-import { FaCircle } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 function Product() {
-  // const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [allProducts, setAllProducts] = useState([]);
   const [orignalProductsList, setorignalProductsList] = useState([]);
@@ -38,11 +34,14 @@ function Product() {
 
   async function featuredProducts() {
     setShowLoader(true);
+    try {
+      const fetchproductList = await axios.get(products_url);
 
-    const fetchproductList = await axios.get(products_url);
-
-    setAllProducts(fetchproductList.data);
-    setorignalProductsList(fetchproductList.data);
+      setAllProducts(fetchproductList.data);
+      setorignalProductsList(fetchproductList.data);
+    } catch (error) {
+      navigate("/notfound");
+    }
 
     setShowLoader(false);
   }
@@ -614,6 +613,13 @@ function Product() {
               ))}
             </section>
           )}
+          {/* {showDetails && allProducts.length > 0 && (
+            <section className="grid text-red-500 grid-cols-1 px-8 gap-4">
+              {allProducts.map((m, i) => (
+                <DetailCard key={i} productDetails={m} />
+              ))}
+            </section>
+          )} */}
           {allProducts.length <= 0 && <p>No product Found</p>}
         </div>
       </section>

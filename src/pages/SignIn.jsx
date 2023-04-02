@@ -3,9 +3,14 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { firebaseapp } from "../config/firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useSelector, useDispatch } from "react-redux";
+import { UserLoggedIn } from "../features/loginSlice";
+import { useNavigate } from "react-router-dom";
 
 function SignIn() {
   const { register, handleSubmit } = useForm();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const auth = getAuth(firebaseapp);
   return (
     <div className="flex items-center justify-center">
@@ -28,12 +33,21 @@ function SignIn() {
 
           <form
             onSubmit={handleSubmit(async (data) => {
-              const userDetails = await signInWithEmailAndPassword(
-                auth,
-                data.email,
-                data.password
-              );
-              console.log(userDetails.user);
+              let userDetails;
+              try {
+                userDetails = await signInWithEmailAndPassword(
+                  auth,
+                  data.email,
+                  data.password
+                );
+
+                dispatch(UserLoggedIn());
+                navigate("/");
+              } catch (error) {
+                console.log(error.code);
+              }
+
+              // console.log(userDetails.user);
             })}
             className="mt-8"
           >
@@ -108,9 +122,9 @@ function SignIn() {
           </form>
 
           <div className="mt-3 space-y-3">
-            <button
+            {/* <button
               type="button"
-              className="relative inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-gray-700 dark:text-gray-400 transition-all duration-200 bg-white border border-gray-500 rounded-md hover:bg-gray-100 focus:bg-gray-100 hover:text-black focus:text-black focus:outline-none"
+              className=" inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-gray-700 dark:text-gray-400 transition-all duration-200 bg-white border border-gray-500 rounded-md hover:bg-gray-100 focus:bg-gray-100 hover:text-black focus:text-black focus:outline-none"
             >
               <div className="absolute inset-y-0 left-0 p-4">
                 <svg
@@ -123,7 +137,7 @@ function SignIn() {
                 </svg>
               </div>
               Sign in with Google
-            </button>
+            </button> */}
           </div>
         </div>
       </div>

@@ -32,10 +32,16 @@ function ProductDetailsCard() {
 
   async function fetchProductDetails() {
     setShowLoader(true);
-    const productData = await axios.get(`${single_product_url}${productid}`);
-    const Details = productData.data;
-    // console.log(Details);
-    setproductdetail(Details);
+    let productData;
+    try {
+      productData = await axios.get(`${single_product_url}${productid}`);
+      const Details = productData.data;
+      // console.log(Details);
+      setproductdetail(Details);
+    } catch (error) {
+      navigate("/notfound");
+    }
+
     setShowLoader(false);
   }
 

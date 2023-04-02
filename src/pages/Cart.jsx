@@ -135,61 +135,63 @@ function Cart() {
           </section>
 
           {/* Order summary */}
-          <section
-            aria-labelledby="summary-heading"
-            className="mt-16 rounded-md bg-white dark:bg-slate-600 lg:col-span-4 lg:mt-0 lg:p-0"
-          >
-            <h2
-              id="summary-heading"
-              className=" px-4 py-3 sm:p-4 border-b border-gray-200 text-lg font-medium text-gray-900 dark:text-gray-200"
+          {cartproductList.length > 0 && (
+            <section
+              aria-labelledby="summary-heading"
+              className="mt-16 rounded-md bg-white dark:bg-slate-600 lg:col-span-4 lg:mt-0 lg:p-0"
             >
-              Price Details
-            </h2>
+              <h2
+                id="summary-heading"
+                className=" px-4 py-3 sm:p-4 border-b border-gray-200 text-lg font-medium text-gray-900 dark:text-gray-200"
+              >
+                Price Details
+              </h2>
 
-            <div>
-              <dl className=" space-y-1  px-6 py-4 sm:p-6">
-                <div className="flex items-center justify-between">
-                  <dt className="text-sm text-gray-800 dark:text-gray-200">
-                    Price ({cartproductList.length} item)
-                  </dt>
-                  <dd className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                    {new Intl.NumberFormat("en-IN", {
-                      maximumSignificantDigits: 3,
-                    }).format(totalValue())}
-                  </dd>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                  <dt className="flex items-center text-sm text-gray-800 dark:text-gray-200">
-                    <span>Discount</span>
-                  </dt>
-                  <dd className="text-sm font-medium text-green-700 dark:text-green-400">
-                    - ----
-                  </dd>
-                </div>
-                <div className="flex items-center justify-between py-4">
-                  <dt className="flex text-sm text-gray-800 dark:text-gray-200">
-                    <span>Delivery Charges</span>
-                  </dt>
-                  <dd className="text-sm font-medium text-green-700 dark:text-green-400">
-                    Free
-                  </dd>
-                </div>
-                <div className="flex items-center justify-between py-4 border-y border-dashed ">
-                  <dt className="text-base font-medium text-gray-900 dark:text-white">
-                    Total Amount
-                  </dt>
-                  <dd className="text-base font-medium text-gray-900 dark:text-white">
-                    {new Intl.NumberFormat("en-IN", {
-                      maximumSignificantDigits: 3,
-                    }).format(totalValue())}
-                  </dd>
-                </div>
-              </dl>
-              {/* <div className="px-6 pb-4 font-medium text-green-700 dark:text-green-400">
+              <div>
+                <dl className=" space-y-1  px-6 py-4 sm:p-6">
+                  <div className="flex items-center justify-between">
+                    <dt className="text-sm text-gray-800 dark:text-gray-200">
+                      Price ({cartproductList.length} item)
+                    </dt>
+                    <dd className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                      {new Intl.NumberFormat("en-IN", {
+                        maximumSignificantDigits: 3,
+                      }).format(totalValue())}
+                    </dd>
+                  </div>
+                  <div className="flex items-center justify-between pt-4">
+                    <dt className="flex items-center text-sm text-gray-800 dark:text-gray-200">
+                      <span>Discount</span>
+                    </dt>
+                    <dd className="text-sm font-medium text-green-700 dark:text-green-400">
+                      - ----
+                    </dd>
+                  </div>
+                  <div className="flex items-center justify-between py-4">
+                    <dt className="flex text-sm text-gray-800 dark:text-gray-200">
+                      <span>Delivery Charges</span>
+                    </dt>
+                    <dd className="text-sm font-medium text-green-700 dark:text-green-400">
+                      Free
+                    </dd>
+                  </div>
+                  <div className="flex items-center justify-between py-4 border-y border-dashed ">
+                    <dt className="text-base font-medium text-gray-900 dark:text-white">
+                      Total Amount
+                    </dt>
+                    <dd className="text-base font-medium text-gray-900 dark:text-white">
+                      {new Intl.NumberFormat("en-IN", {
+                        maximumSignificantDigits: 3,
+                      }).format(totalValue())}
+                    </dd>
+                  </div>
+                </dl>
+                {/* <div className="px-6 pb-4 font-medium text-green-700 dark:text-green-400">
                 You will save ₹ 3,431 on this order
               </div> */}
-            </div>
-          </section>
+              </div>
+            </section>
+          )}
         </form>
       </div>
 
@@ -203,12 +205,14 @@ function Cart() {
             <span className="sr-only sm:not-sr-only"> to shop</span>
           </button>
         </Link>
-        <button
-          type="button"
-          className="px-6 py-2 border rounded-md dark:bg-violet-400 dark:text-gray-900 dark:border-violet-400"
-        >
-          <span className="sr-only sm:not-sr-only">Continue to</span> Checkout
-        </button>
+        <Link to="/checkout">
+          <button
+            type="button"
+            className="px-6 py-2 border rounded-md dark:bg-violet-400 dark:text-gray-900 dark:border-violet-400"
+          >
+            <span className="sr-only sm:not-sr-only">Continue to</span> Checkout
+          </button>
+        </Link>
       </div>
     </div>
   );

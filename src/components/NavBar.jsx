@@ -7,10 +7,13 @@ import { FaBars } from "react-icons/fa";
 import { Link } from "react-router-dom";
 // import { FaXbox } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
+import { UserLoggedOut } from "../features/loginSlice";
 
 function NavBar() {
   const cartproductList = useSelector((state) => state.cart.cartitemsList);
   const [showMobileNav, setShowMobileNav] = useState(false);
+  const isloggedIn = useSelector((state) => state.login.islogin);
+  const dispatch = useDispatch();
 
   return (
     <nav className="flex px-8 py-2  justify-between items-center text-[1.2rem]">
@@ -45,9 +48,15 @@ function NavBar() {
         <div className="absolute  left-4 bottom-2  rounded-full bg-my-color w-7 h-7 text-white flex justify-center items-center">
           <p>{cartproductList.length}</p>
         </div>
-        <Link to="/signin">
-          <button>Login</button>
-        </Link>
+        {!isloggedIn && (
+          <Link to="/signin">
+            <button>Login</button>
+          </Link>
+        )}
+
+        {isloggedIn && (
+          <button onClick={() => dispatch(UserLoggedOut())}>Logout</button>
+        )}
       </div>
       {!showMobileNav && (
         <button onClick={() => setShowMobileNav(true)} className="md:hidden">
@@ -64,7 +73,8 @@ function NavBar() {
       {showMobileNav && (
         <div
           onClick={() => setShowMobileNav(false)}
-          className="absolute w-full h-full top-16 left-0 animate__animated animate__fadeInLeft flex flex-col items-center  bg-gray-50"
+          className="absolute w-full h-full top-12 left-0 animate__animated animate__fadeInLeft  flex flex-col justify-start items-center 
+           bg-gray-50"
         >
           <ul className="flex flex-col justify-between items-center gap-8 mb-8">
             <Link to="/">
@@ -86,9 +96,15 @@ function NavBar() {
             <div className="absolute  left-4 bottom-2  rounded-full bg-my-color w-7 h-7 text-white flex justify-center items-center">
               <p>{cartproductList.length}</p>
             </div>
-            <Link to="/signin">
-              <button>Login</button>
-            </Link>
+            {!isloggedIn && (
+              <Link to="/signin">
+                <button>Login</button>
+              </Link>
+            )}
+
+            {isloggedIn && (
+              <button onClick={() => dispatch(UserLoggedOut())}>Logout</button>
+            )}
           </div>
         </div>
       )}

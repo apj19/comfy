@@ -9,6 +9,8 @@ import Product from "./pages/Product";
 import Footer from "./components/Footer";
 import SignIn from "./pages/SignIn";
 import Up from "./pages/Up";
+import Checkout from "./pages/Checkout";
+import Auth from "./components/Auth";
 
 function App() {
   return (
@@ -26,6 +28,14 @@ function App() {
         <Route path="/cart" element={<Cart />}></Route>
         <Route path="/signin" element={<SignIn />}></Route>
         <Route path="/signup" element={<Up />}></Route>
+        <Route
+          path="/checkout"
+          element={
+            <Auth>
+              <Checkout />
+            </Auth>
+          }
+        ></Route>
 
         <Route path="*" element={<NotFound />}></Route>
       </Routes>

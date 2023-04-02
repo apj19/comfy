@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function About() {
   return (
-    <section className="lg:py-12 lg:flex lg:justify-center">
+    <section className="lg:py-12 lg:flex lg:justify-center min-h-[80vh]">
       <div className="overflow-hidden lg:mx-8 lg:flex lg:max-w-6xl lg:w-full lg:shadow-md lg:rounded-xl">
         <div className="lg:w-1/2">
           <div className="h-64 bg-cover lg:h-full">
