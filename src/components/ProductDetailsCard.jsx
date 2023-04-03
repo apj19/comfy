@@ -8,12 +8,20 @@ import { FaCircle } from "react-icons/fa";
 import { GridLoader } from "react-spinners";
 import { AddtoCart } from "../features/cartSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { FaStar } from "react-icons/fa";
 
 function ProductDetailsCard() {
   const { productid } = useParams();
   const [showLoder, setShowLoader] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [selectColor, setSelectColor] = useState(0);
+  const fivestarts = [
+    <FaStar />,
+    <FaStar />,
+    <FaStar />,
+    <FaStar />,
+    <FaStar />,
+  ];
 
   const [productdetails, setproductdetail] = useState({
     name: "",
@@ -114,7 +122,22 @@ function ProductDetailsCard() {
                   {productdetails.name}
                 </h1>
 
-                <div>reviews</div>
+                <div className="flex justify-start gap-2 items-center">
+                  <div className="flex gap-1 my-2">
+                    {fivestarts.map((s, i) => (
+                      <div
+                        className={`${
+                          i < Math.ceil(productdetails.stars) - 1
+                            ? "text-[#ffb900]"
+                            : "text-gray-200"
+                        }`}
+                      >
+                        {s}
+                      </div>
+                    ))}
+                  </div>
+                  ({productdetails.reviews} customer reviews)
+                </div>
 
                 <p>{productdetails.description}</p>
               </div>
