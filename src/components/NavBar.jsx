@@ -65,17 +65,16 @@ function NavBar() {
       )}
 
       {showMobileNav && (
-        <button onClick={() => setShowMobileNav(false)}>
-          <FaXbox />
-        </button>
-      )}
-
-      {showMobileNav && (
         <div
           onClick={() => setShowMobileNav(false)}
-          className="absolute w-full h-full top-12 left-0 animate__animated animate__fadeInLeft  flex flex-col justify-start items-center 
+          className="fixed z-10 w-full h-[100vh]  top-0 py-12 left-0 animate__animated animate__fadeInLeft  flex flex-col justify-start items-center 
            bg-gray-50"
         >
+          <div className="flex justify-end w-full px-10">
+            <button onClick={() => setShowMobileNav(false)}>
+              <FaXbox />
+            </button>
+          </div>
           <ul className="flex flex-col justify-between items-center gap-8 mb-8">
             <Link to="/">
               <li>Home</li>

@@ -24,13 +24,12 @@ function ProductDetailsCard() {
   ];
 
   const [productdetails, setproductdetail] = useState({
+    id: "",
     name: "",
-    images: [
-      {
-        url: "",
-      },
-    ],
+    images: "",
     colors: [],
+    description: "",
+    price: 0,
   });
   const [color, setcolor] = useState("");
 
@@ -43,9 +42,18 @@ function ProductDetailsCard() {
     let productData;
     try {
       productData = await axios.get(`${single_product_url}${productid}`);
-      const Details = productData.data;
+      const Details = productData.data.data;
       // console.log(Details);
-      setproductdetail(Details);
+
+      const modifiedDetails = {
+        id: Details.id,
+        name: Details.attributes.title,
+        images: Details.attributes.image,
+        colors: [...Details.attributes.colors],
+        description: Details.attributes.description,
+        price: Details.attributes.price,
+      };
+      setproductdetail(modifiedDetails);
     } catch (error) {
       navigate("/notfound");
     }
@@ -66,11 +74,11 @@ function ProductDetailsCard() {
         id: productdetails.id,
         name: productdetails.name,
         price: productdetails.price,
-        imgsrc: productdetails.images[0],
+        imgsrc: productdetails.images,
         color: "dd",
         pquantity: quantity,
         pcolor: selectedcolor,
-        stock: productdetails.stock,
+        stock: 0,
       })
     );
     navigate("/cart");
@@ -93,12 +101,12 @@ function ProductDetailsCard() {
             <div className=" mt-4">
               <img
                 alt="Tee"
-                src={imageUrl || productdetails.images[0].url}
+                src={imageUrl || productdetails.images}
                 className="h-[300px] w-full rounded-xl md:h-[500px]  "
               />
             </div>
 
-            <div className="mt-2 flex gap-2 justify-center items-center">
+            {/* <div className="mt-2 flex gap-2 justify-center items-center">
               {productdetails.images.map((m, i) => (
                 <div
                   key={i}
@@ -112,7 +120,7 @@ function ProductDetailsCard() {
                   />
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
 
           <div className="lg:sticky lg:top-0 lg:col-span-2">
@@ -126,6 +134,7 @@ function ProductDetailsCard() {
                   <div className="flex gap-1 my-2">
                     {fivestarts.map((s, i) => (
                       <div
+                        key={i}
                         className={`${
                           i < Math.ceil(productdetails.stars) - 1
                             ? "text-[#ffb900]"
@@ -150,7 +159,7 @@ function ProductDetailsCard() {
                   }).format(productdetails.price)}
                 </p>
               </div>
-              <div className="border-b">
+              {/* <div className="border-b">
                 <table className="border-spacing-4 border-separate">
                   <tbody>
                     <tr>
@@ -171,68 +180,66 @@ function ProductDetailsCard() {
                     </tr>
                   </tbody>
                 </table>
-              </div>
+              </div> */}
 
-              {productdetails.stock > 0 && (
+              <div>
                 <div>
-                  <div>
-                    <table className="border-spacing-4 border-separate">
-                      <tbody>
-                        <tr>
-                          <th>Colors</th>
-                          {productdetails.colors?.map((m, i) => (
-                            <td key={m}>
-                              <button
-                                onClick={(e) => {
-                                  setSelectColor(i);
-                                  setcolor(m);
-                                  // setselectfiltercolor(e.target.value);
-                                  // allFilters("", "", e.target.value);
-                                }}
-                                value={m}
-                                className={`border-2  rounded-full w-6 h-6  
+                  <table className="border-spacing-4 border-separate">
+                    <tbody>
+                      <tr>
+                        <th>Colors</th>
+                        {productdetails.colors?.map((m, i) => (
+                          <td key={i}>
+                            <button
+                              onClick={(e) => {
+                                setSelectColor(i);
+                                setcolor(m);
+                                // setselectfiltercolor(e.target.value);
+                                // allFilters("", "", e.target.value);
+                              }}
+                              value={m}
+                              className={`border-2  rounded-full w-6 h-6  
                   ${selectColor == i ? "border-black" : ""}`}
-                                style={{ backgroundColor: m }}
-                              ></button>
-                            </td>
-                          ))}
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div className="flex mb-2">
-                    <div className="flex min-w-24 dark:text-white">
-                      <button
-                        onClick={() => setQuantity(quantity - 1)}
-                        disabled={quantity == 1}
-                        type="button"
-                        className="h-7 w-7 rounded-full border border-[#e0e0e0]"
-                      >
-                        -
-                      </button>
-                      <p className="h-7 w-9 text-center mx-1 text-[1.3rem]">
-                        {quantity}
-                      </p>
-
-                      <button
-                        onClick={() => setQuantity(quantity + 1)}
-                        disabled={quantity == productdetails.stock}
-                        type="button"
-                        className="h-7 w-7 rounded-full border border-[#e0e0e0] flex justify-center items-center"
-                      >
-                        +
-                      </button>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={handleAddtoCart}
-                    className="w-full md:w-[200px] rounded bg-red-700 px-6 py-3 text-sm font-bold uppercase tracking-wide text-white"
-                  >
-                    Add to cart
-                  </button>
+                              style={{ backgroundColor: m }}
+                            ></button>
+                          </td>
+                        ))}
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
-              )}
+                <div className="flex mb-2">
+                  <div className="flex min-w-24 text-black">
+                    <button
+                      onClick={() => setQuantity(quantity - 1)}
+                      disabled={quantity == 1}
+                      type="button"
+                      className="h-7 w-7 rounded-full border border-[#ddb7b7]"
+                    >
+                      -
+                    </button>
+                    <p className="h-7 w-9 text-center mx-1 text-[1.3rem]">
+                      {quantity}
+                    </p>
+
+                    <button
+                      onClick={() => setQuantity(quantity + 1)}
+                      disabled={quantity == productdetails.stock}
+                      type="button"
+                      className="h-7 w-7 rounded-full border border-[#e0e0e0] flex justify-center items-center"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+
+                <button
+                  onClick={handleAddtoCart}
+                  className="w-full md:w-[200px] rounded bg-red-700 px-6 py-3 text-sm font-bold uppercase tracking-wide text-white"
+                >
+                  Add to cart
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -242,101 +249,3 @@ function ProductDetailsCard() {
 }
 
 export default ProductDetailsCard;
-
-{
-  /* <fieldset>
-                <legend class="text-lg font-bold">Color</legend>
-
-                <div class="mt-2 flex flex-wrap gap-1">
-                  <label for="color_green" class="cursor-pointer">
-                    <input
-                      type="radio"
-                      id="color_green"
-                      name="color"
-                      class="peer sr-only"
-                      checked
-                    />
-
-                    <span class="block h-6 w-6 rounded-full border border-gray-200 bg-green-700 ring-1 ring-transparent ring-offset-1 peer-checked:ring-gray-300"></span>
-                  </label>
-
-                  <label for="color_blue" class="cursor-pointer">
-                    <input
-                      type="radio"
-                      id="color_blue"
-                      name="color"
-                      class="peer sr-only"
-                    />
-
-                    <span class="block h-6 w-6 rounded-full border border-gray-200 bg-blue-700 ring-1 ring-transparent ring-offset-1 peer-checked:ring-gray-300"></span>
-                  </label>
-
-                  <label for="color_pink" class="cursor-pointer">
-                    <input
-                      type="radio"
-                      id="color_pink"
-                      name="color"
-                      class="peer sr-only"
-                    />
-
-                    <span class="block h-6 w-6 rounded-full border border-gray-200 bg-pink-700 ring-1 ring-transparent ring-offset-1 peer-checked:ring-gray-300"></span>
-                  </label>
-
-                  <label for="color_red" class="cursor-pointer">
-                    <input
-                      type="radio"
-                      id="color_red"
-                      name="color"
-                      class="peer sr-only"
-                    />
-
-                    <span class="block h-6 w-6 rounded-full border border-gray-200 bg-red-700 ring-1 ring-transparent ring-offset-1 peer-checked:ring-gray-300"></span>
-                  </label>
-
-                  <label for="color_indigo" class="cursor-pointer">
-                    <input
-                      type="radio"
-                      id="color_indigo"
-                      name="color"
-                      class="peer sr-only"
-                    />
-
-                    <span class="block h-6 w-6 rounded-full border border-gray-200 bg-indigo-700 ring-1 ring-transparent ring-offset-1 peer-checked:ring-gray-300"></span>
-                  </label>
-                </div>
-              </fieldset>
-
-              <fieldset>
-                <legend class="text-lg font-bold">Material</legend>
-
-                <div class="mt-2 flex flex-wrap gap-1">
-                  <label for="material_cotton" class="cursor-pointer">
-                    <input
-                      type="radio"
-                      id="material_cotton"
-                      name="material"
-                      class="peer sr-only"
-                      checked
-                    />
-
-                    <span class="block rounded-full border border-gray-200 px-3 py-1 text-xs peer-checked:bg-gray-100">
-                      Cotton
-                    </span>
-                  </label>
-
-                  <label for="material_wool" class="cursor-pointer">
-                    <input
-                      type="radio"
-                      id="material_wool"
-                      name="material"
-                      class="peer sr-only"
-                      checked
-                    />
-
-                    <span class="block rounded-full border border-gray-200 px-3 py-1 text-xs peer-checked:bg-gray-100">
-                      Wool
-                    </span>
-                  </label>
-                </div>
-              </fieldset> */
-}

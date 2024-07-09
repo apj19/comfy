@@ -21,7 +21,7 @@ function NewCollection({ list }) {
           <li>
             <div href="#" className="relative block group">
               <img
-                src={list[0]?.image}
+                src={list[0]?.attributes.image}
                 alt=""
                 className="object-cover w-full transition duration-500 aspect-square group-hover:opacity-90"
               />
@@ -42,7 +42,7 @@ function NewCollection({ list }) {
           <li>
             <div className="relative block group">
               <img
-                src={list[1]?.image}
+                src={list[1]?.attributes.image}
                 alt=""
                 className="object-cover w-full transition duration-500 aspect-square group-hover:opacity-90"
               />
@@ -63,7 +63,7 @@ function NewCollection({ list }) {
           <li className="lg:col-span-2 lg:col-start-2 lg:row-span-2 lg:row-start-1">
             <div href="#" className="relative block group">
               <img
-                src={list[2]?.image}
+                src={list[2]?.attributes.image}
                 alt=""
                 className="object-cover w-full transition duration-500 aspect-square group-hover:opacity-90"
               />

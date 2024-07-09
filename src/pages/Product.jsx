@@ -30,15 +30,15 @@ function Product() {
 
   const [selectPricefilter, setselectPricefilter] = useState("330000");
 
-  const colorsArray = ["#ff0000", "#00ff00", "#0000ff", "#000", "#ffb900"];
+  const colorsArray = ["#33FF57", "#3366FF", "#FF5733", "#FFFF00", "#ffb900"];
 
   async function featuredProducts() {
     setShowLoader(true);
     try {
       const fetchproductList = await axios.get(products_url);
-
-      setAllProducts(fetchproductList.data);
-      setorignalProductsList(fetchproductList.data);
+      // console.log(fetchproductList.data.data);
+      setAllProducts(fetchproductList.data.data);
+      setorignalProductsList(fetchproductList.data.data);
     } catch (error) {
       navigate("/notfound");
     }
@@ -48,13 +48,15 @@ function Product() {
 
   function handleSorting(e) {
     const currentproducts = [...allProducts];
+    // console.log("current products");
+    // console.log(currentproducts[0]);
 
     switch (e.target.value) {
       case "sortA_Z":
         // currentproducts.reverse();
         currentproducts.sort((str1, str2) => {
-          let fa = str1.name.toLowerCase(),
-            fb = str2.name.toLowerCase();
+          let fa = str1.attributes.title.toLowerCase(),
+            fb = str2.attributes.title.toLowerCase();
 
           if (fa < fb) {
             return -1;
@@ -68,8 +70,8 @@ function Product() {
       case "sortZ_A":
         currentproducts
           .sort((str1, str2) => {
-            let fa = str1.name.toLowerCase(),
-              fb = str2.name.toLowerCase();
+            let fa = str1.attributes.title.toLowerCase(),
+              fb = str2.attributes.title.toLowerCase();
 
             if (fa < fb) {
               return -1;
@@ -82,10 +84,14 @@ function Product() {
           .reverse();
         break;
       case "PriceLow_High":
-        currentproducts.sort((str1, str2) => str1.price - str2.price);
+        currentproducts.sort(
+          (str1, str2) => str1.attributes.price - str2.attributes.price
+        );
         break;
       case "PriceHigh_Low":
-        currentproducts.sort((str1, str2) => str1.price - str2.price).reverse();
+        currentproducts
+          .sort((str1, str2) => str1.attributes.price - str2.attributes.price)
+          .reverse();
         break;
     }
 
@@ -102,7 +108,7 @@ function Product() {
     }
 
     let filteredProducts = currentproducts.filter((f) =>
-      f.name.includes(e.target.value)
+      f.attributes.title.includes(e.target.value)
     );
     setAllProducts(filteredProducts);
   }
@@ -113,7 +119,6 @@ function Product() {
     let color;
     let price;
     // console.log("state values", selectCat, selectCompany, selectfiltercolor);
-    // console.log("input values", mycat, mycompany, color);
 
     if (mycat == "") {
       cat = selectCat;
@@ -145,30 +150,36 @@ function Product() {
     if (cat == "all") {
       filteredProducts = orignalProductsList;
     } else {
-      filteredProducts = filteredProducts.filter((f) => f.category == cat);
+      filteredProducts = filteredProducts.filter((f) => {
+        // console.log(f.attributes.company);
+        return f.attributes.category == cat;
+      });
     }
 
     if (comp == "all") {
     } else {
-      filteredProducts = filteredProducts.filter((f) => f.company == comp);
+      filteredProducts = filteredProducts.filter(
+        (f) => f.attributes.company == comp
+      );
     }
 
     if (color == "all") {
     } else {
-      filteredProducts = filteredProducts.filter((f) =>
-        f.colors.includes(color)
-      );
+      filteredProducts = filteredProducts.filter((f) => {
+        return f.attributes.colors.includes(color);
+      });
     }
 
     if (price == 330000) {
     } else {
       filteredProducts = filteredProducts.filter(
-        (f) => parseInt(f.price) < parseInt(price)
+        (f) => parseInt(f.attributes.price) < parseInt(price)
       );
     }
 
     setfilteredProductList(filteredProducts);
     setAllProducts(filteredProducts);
+    // console.log("input values", mycat, mycompany, color);
   }
 
   function clearFilters() {
@@ -224,9 +235,9 @@ function Product() {
                     allFilters(e.target.value, "", "");
                   }}
                   className={`${selectCatogory == 2 ? "border-b" : ""}`}
-                  value="office"
+                  value="Chairs"
                 >
-                  Office
+                  Chairs
                 </button>
                 <button
                   onClick={(e) => {
@@ -236,9 +247,9 @@ function Product() {
                     allFilters(e.target.value, "", "");
                   }}
                   className={`${selectCatogory == 3 ? "border-b" : ""}`}
-                  value="living room"
+                  value="Beds"
                 >
-                  Living Room
+                  Beds
                 </button>
                 <button
                   onClick={(e) => {
@@ -248,9 +259,9 @@ function Product() {
                     allFilters(e.target.value, "", "");
                   }}
                   className={`${selectCatogory == 4 ? "border-b" : ""}`}
-                  value="kitchen"
+                  value="Tables"
                 >
-                  Kitchen
+                  Tables
                 </button>
                 <button
                   onClick={(e) => {
@@ -260,9 +271,9 @@ function Product() {
                     allFilters(e.target.value, "", "");
                   }}
                   className={`${selectCatogory == 5 ? "border-b" : ""}`}
-                  value="bedroom"
+                  value="Sofas"
                 >
-                  Bedroom
+                  Sofas
                 </button>
                 <button
                   onClick={(e) => {
@@ -284,7 +295,7 @@ function Product() {
                     allFilters(e.target.value, "", "");
                   }}
                   className={`${selectCatogory == 7 ? "border-b" : ""}`}
-                  value="kids"
+                  value="Kids"
                 >
                   Kids
                 </button>
@@ -302,10 +313,10 @@ function Product() {
                 value={selectCompany}
               >
                 <option value="all">All</option>
-                <option value="marcos">Marcos</option>
-                <option value="liddy">Liddy</option>
-                <option value="ikea">Ikea</option>
-                <option value="caressa">Caressa</option>
+                <option value="Modenza">Modenza</option>
+                <option value="Luxora">Luxora</option>
+                <option value="Homestead">Homestead</option>
+                <option value="Comfora">Comfora</option>
               </select>
             </div>
 
@@ -315,7 +326,7 @@ function Product() {
                 <button
                   className={` ${selectColor == "all" ? "border-b" : ""}`}
                   value="all"
-                  onClick={() => {
+                  onClick={(e) => {
                     setSelectColor("all");
                     setselectfiltercolor(e.target.value);
                     allFilters("", "", e.target.value);

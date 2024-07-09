@@ -14,10 +14,16 @@ function Home() {
 
   async function featuredProducts() {
     setShowLoader(true);
-    const fetchproductList = await axios.get(products_url);
-    setFeaturedProductList(fetchproductList.data.slice(0, 3));
-    setnewcollection(fetchproductList.data.slice(4, 7));
-    setShowLoader(false);
+    try {
+      const fetchproductList = await axios.get(products_url);
+
+      setFeaturedProductList(fetchproductList.data.data.slice(0, 3));
+      setnewcollection(fetchproductList.data.data.slice(4, 7));
+      setShowLoader(false);
+    } catch (error) {
+      setShowLoader(false);
+      console.error(error);
+    }
   }
 
   useEffect(() => {

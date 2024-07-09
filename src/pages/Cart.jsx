@@ -24,30 +24,27 @@ function Cart() {
   // console.log(cartproductList);
 
   return (
-    <div className="bg-gray-100 ">
+    <div className=" ">
       <div className="mx-auto max-w-2xl px-4 pt-16 pb-24 sm:px-6 lg:max-w-7xl lg:px-8">
-        <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+        <h1 className="text-3xl font-bold tracking-tight text-black  sm:text-4xl">
           Shopping Cart
         </h1>
         <form className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
           <section
             aria-labelledby="cart-heading"
-            className="lg:col-span-8 bg-white dark:bg-slate-600"
+            className="lg:col-span-8 bg-white dark:bg-slate-100 text-black"
           >
             <h2 id="cart-heading" className="sr-only">
               Items in your shopping cart
             </h2>
 
-            <ul
-              role="list"
-              className="divide-y divide-gray-200 border-t border-b border-gray-200"
-            >
+            <ul role="list" className="divide-y   border-t border-b ">
               {cartproductList.map((product) => (
                 <div key={product.id} className="px-4">
                   <li className="flex py-6 sm:py-6 ">
                     <div className="flex-shrink-0">
                       <img
-                        src={product.imgsrc.url}
+                        src={product.imgsrc}
                         alt={product.name}
                         className="h-24 w-24 rounded-md object-contain object-center sm:h-38 sm:w-38"
                       />
@@ -58,7 +55,7 @@ function Cart() {
                         <div>
                           <div className="flex justify-between">
                             <h3 className="text-sm">
-                              <p className="font-medium text-lg text-gray-700 dark:text-white">
+                              <p className="font-medium text-lg ">
                                 {product.name}
                               </p>
                             </h3>
@@ -70,7 +67,7 @@ function Cart() {
                             ></p>
                           </div>
                           <div className="mt-1 flex items-end">
-                            <p className="text-[1.2rem]  font-medium text-gray-500 ">
+                            <p className="text-[1.2rem]  font-medium  ">
                               <FaRupeeSign className="inline-block" />
                               {new Intl.NumberFormat("en-IN", {
                                 maximumSignificantDigits: 3,
@@ -83,7 +80,7 @@ function Cart() {
                   </li>
 
                   <div className="flex mb-2">
-                    <div className="flex min-w-24 dark:text-white">
+                    <div className="flex min-w-24 ">
                       <button
                         onClick={() =>
                           dispatch(

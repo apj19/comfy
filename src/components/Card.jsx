@@ -8,21 +8,21 @@ function Card({ productDetails }) {
       <Link to={`/product/${productDetails.id}`}>
         <img
           alt="Home"
-          src={productDetails.image}
+          src={productDetails.attributes.image}
           className="h-56 w-full rounded-md object-cover hover:scale-105 transition-all saturate-300 ease-in-out"
         />
 
         <div className="mt-2">
           <div className="flex justify-between items-center">
             <div>
-              <p className="font-medium ">{productDetails.name}</p>
+              <p className="font-medium ">{productDetails.attributes.title}</p>
             </div>
             <div>
               <p className="text-sm text-gray-500">
                 <FaRupeeSign className="inline-block" />
                 {new Intl.NumberFormat("en-IN", {
                   maximumSignificantDigits: 3,
-                }).format(productDetails.price)}
+                }).format(productDetails.attributes.price)}
               </p>
             </div>
           </div>

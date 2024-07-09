@@ -16,11 +16,11 @@ function About() {
         </div>
 
         <div className="max-w-xl px-6 py-12 lg:max-w-5xl lg:w-1/2">
-          <h2 className="text-2xl font-semibold text-gray-800 dark:text-white md:text-3xl">
+          <h2 className="text-2xl font-semibold text-gray-800  md:text-3xl">
             Build Your New <span className="text-indigo-600">House</span>
           </h2>
 
-          <p className="mt-4 text-gray-500 dark:text-gray-300">
+          <p className="mt-4 text-gray-500 ">
             Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quidem
             modi reprehenderit vitae exercitationem aliquid dolores ullam
             temporibus enim expedita aperiam mollitia iure consectetur dicta
